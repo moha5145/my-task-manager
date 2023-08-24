@@ -23,11 +23,11 @@ const Column = ({
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="flex flex-wrap md:h-full py-2 justify-center items-start lg:px-16 ">
+    <div className="flex flex-wrap md:h-full py-2 justify-center items-start md:pr-12">
       {state.columns.map((column, columnIndex) => {
         return (
           <div
-            className="flex flex-col w-full h-full sm:w-1/2 md:w-auto border px-2 gap-2 "
+            className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:1/5 h-full overflow-y-auto  border px-2 gap-2 "
             key={column.title}
             onDragEnter={
               dragging && !column.todos.length

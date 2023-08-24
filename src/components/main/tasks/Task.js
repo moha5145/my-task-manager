@@ -75,7 +75,7 @@ const Task = ({ state, category, dispatch }) => {
       />
 
       <div
-        className="flex w-full items-start flex-grow "
+        className="flex w-full justify-center items-start flex-grow "
         style={{ backgroundColor: currCategory?.color?.secondary }}
       >
         <Columns

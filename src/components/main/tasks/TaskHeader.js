@@ -21,7 +21,7 @@ const TasksHeader = ({ state, category, currCategory, dispatch, type }) => {
   };
 
   return (
-    <div className="flex flex-wrap w-full justify-between items-center py-4 gap-2 px-2 lg:px-20">
+    <div className="flex flex-wrap w-full justify-between items-center py-4 gap-2 px-2">
       <div className="flex gap-2">
         <FlatButton
           Icon={ArrowBackIcon}

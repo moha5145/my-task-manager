@@ -6,7 +6,7 @@ const AddColumn = ({ dispatch }) => {
   const [columnName, setColumnName] = useState("");
 
   return (
-    <div className="fixed top-52 right-1 flex gap-3 shadow-md h-10">
+    <div className="fixed top-[21.4%] right-3 flex gap-3 shadow-2xl h-10">
       {showInput ? (
         <input
           type="text"
