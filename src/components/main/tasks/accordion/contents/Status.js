@@ -42,7 +42,9 @@ const Status = ({ state, dispatch, todo, category, focus, setFocus }) => {
         }
       >
         {state.columns.map((column) => (
-          <option value={column.title}>{column.title}</option>
+          <option key={column.id} value={column.title}>
+            {column.title}
+          </option>
         ))}
         {/* <option value="inProgress">In Progress</option>
         <option value="completed">Completed</option> */}

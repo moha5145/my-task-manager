@@ -1,11 +1,8 @@
 import React, { useRef, useState } from "react";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
 import Accordion from "./accordion/Accordion";
 import AddTask from "./AddTask";
 import AddColumn from "./AddColumn";
-import IconButton from "../../custom/buttons/IconButton";
 import ColHeader from "./ColHeader";
 
 const Column = ({
@@ -24,14 +21,20 @@ const Column = ({
 
   return (
     <div className="flex flex-wrap md:h-full py-2 justify-center items-start md:pr-12">
-      {state.columns.map((column, columnIndex) => {
+      {category.columns.map((column, columnIndex) => {
+        console.log("column form Column", column);
         return (
           <div
             className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:1/5 h-full overflow-y-auto  border px-2 gap-2 "
-            key={column.title}
+            key={column.id}
             onDragEnter={
               dragging && !column.todos.length
-                ? (e) => handleDragEnter(e, { columnIndex, todoIndex: 0 })
+                ? (e) =>
+                    handleDragEnter(
+                      e,
+                      { columnIndex, todoIndex: 0 },
+                      category.columns
+                    )
                 : null
             }
           >
@@ -76,7 +79,11 @@ const Column = ({
                   onDragEnter={
                     dragging
                       ? (e) => {
-                          handleDragEnter(e, { columnIndex, todoIndex });
+                          handleDragEnter(
+                            e,
+                            { columnIndex, todoIndex },
+                            category.columns
+                          );
                         }
                       : null
                   }
@@ -99,7 +106,7 @@ const Column = ({
           </div>
         );
       })}
-      <AddColumn dispatch={dispatch} />
+      <AddColumn dispatch={dispatch} category={category} />
     </div>
   );
 };

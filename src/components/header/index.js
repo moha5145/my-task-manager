@@ -1,5 +1,5 @@
 import React from "react";
-import LockIcon from "@mui/icons-material/Lock";
+import { Lock } from "@mui/icons-material";
 
 import ColoredButton from "../custom/buttons/ColoredButton";
 import FlatButton from "../custom/buttons/FlatButton";
@@ -16,7 +16,7 @@ const Header = () => {
           color=""
         />
         <FlatButton
-          Icon={LockIcon}
+          Icon={Lock}
           text="Déconexion"
           onClick={() => console.log("Backoffice")}
           backgroundColor="red"

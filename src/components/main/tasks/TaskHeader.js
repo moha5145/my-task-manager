@@ -1,9 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Delete, Save, ArrowBack } from "@mui/icons-material";
 
 import FlatButton from "../../custom/buttons/FlatButton";
 import ColoredButton from "../../custom/buttons/ColoredButton";
@@ -11,29 +9,33 @@ import Modal from "./modal/Modal";
 
 import { activeSaveButton } from "../../Reducer";
 
-const TasksHeader = ({ state, category, currCategory, dispatch, type }) => {
+const TasksHeader = ({ state, category, dispatch, type }) => {
+  // console.log("category from TasksHeader", category);
   const navigate = useNavigate();
-  const isSaveButtonActive = activeSaveButton(state, currCategory || category);
+  const isSaveButtonActive = activeSaveButton(state, category);
 
   const saveTodos = (event) => {
     event.preventDefault();
-    dispatch({ type: "saveTodos", payload: currCategory || category });
+    dispatch({ type: "saveTodos", payload: category });
   };
 
   return (
     <div className="flex flex-wrap w-full justify-between items-center py-4 gap-2 px-2">
       <div className="flex gap-2">
         <FlatButton
-          Icon={ArrowBackIcon}
+          Icon={ArrowBack}
           text="Retour"
           color="#22c55e"
-          onClick={() => navigate(-1)}
+          onClick={(e) => {
+            saveTodos(e);
+            navigate(-1);
+          }}
         />
 
         <ColoredButton
           disabled={isSaveButtonActive}
           text="Sauvegarder"
-          Icon={SaveIcon}
+          Icon={Save}
           backgroundColor={isSaveButtonActive ? "#dddbdb" : "#22c55e"}
           onClick={saveTodos}
         />
@@ -47,12 +49,12 @@ const TasksHeader = ({ state, category, currCategory, dispatch, type }) => {
           state={state}
           dispatch={dispatch}
           type="edit"
-          category={currCategory}
+          category={category}
         />
         <FlatButton
           text="Supprimer"
           color="#ef4444"
-          Icon={DeleteIcon}
+          Icon={Delete}
           onClick={() => {
             dispatch({ type: "deleteCategory", payload: category.slug });
             navigate("/");

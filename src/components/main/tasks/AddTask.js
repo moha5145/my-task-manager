@@ -1,5 +1,5 @@
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
+import { Add } from "@mui/icons-material";
 
 // import FlatButton from "../../custom/buttons/FlatButton";
 import IconButton from "../../custom/buttons/IconButton";
@@ -23,7 +23,7 @@ const AddTask = ({
         placeholder="Title"
         onChange={(e) => {
           // e.preventDefault();
-          console.log("e.target.value", e.target.value);
+          // console.log("e.target.value", e.target.value);
           dispatch({
             type: "taskTitle",
             payload: { columnIndex, column, title: e.target.value },
@@ -35,7 +35,7 @@ const AddTask = ({
               type: "addTodo",
               payload: {
                 category,
-                title: state.columns[columnIndex].taskTitle,
+                title: column.taskTitle,
                 status,
                 columnIndex,
               },
@@ -48,7 +48,7 @@ const AddTask = ({
         onBlur={() => {
           setFocus(false);
         }}
-        value={state.columns[columnIndex].taskTitle}
+        value={column.taskTitle}
         style={
           focus
             ? { outlineColor: category?.color?.primary }
@@ -59,7 +59,7 @@ const AddTask = ({
           p-2 overflow-y-hidden resize-non focus:outline-indigo-[${category?.color?.primary}] border-solid rounded-md decoration-2`}
       />
       {/* <FlatButton
-        Icon={AddIcon}
+        Icon={Add}
         color={category?.color?.primary}
         className="p-0"
         onClick={() =>
@@ -71,7 +71,7 @@ const AddTask = ({
       /> */}
 
       <IconButton
-        Icon={AddIcon}
+        Icon={Add}
         color={category?.color?.primary}
         className="p-0"
         onClick={() =>
@@ -79,7 +79,7 @@ const AddTask = ({
             type: "addTodo",
             payload: {
               category,
-              title: state.columns[columnIndex].taskTitle,
+              title: column.taskTitle,
               status,
               columnIndex,
             },

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { ColorLens } from "@mui/icons-material";
 
 import Form from "./Form";
-import FlatButton from "../../../custom/buttons/FlatButton";
 import ColoredButton from "../../../custom/buttons/ColoredButton";
 
 export default function Modal({ state, dispatch, type, category }) {
@@ -16,7 +15,7 @@ export default function Modal({ state, dispatch, type, category }) {
     <>
       <ColoredButton
         text="Theme"
-        Icon={ColorLensIcon}
+        Icon={ColorLens}
         backgroundColor="#22c55e"
         onClick={onEdit}
       />

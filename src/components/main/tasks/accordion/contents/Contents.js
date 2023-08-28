@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Delete } from "@mui/icons-material";
 
 import ColoredButton from "../../../../custom/buttons/ColoredButton";
 import Notes from "./Notes";
@@ -59,7 +59,7 @@ const AccordionContent = ({
           />
           <div className="flex flex-col ml-auto w-12 justify-center items-center self-end my-2 mb-4 text-right">
             <ColoredButton
-              Icon={DeleteIcon}
+              Icon={Delete}
               backgroundColor="#ef4444"
               color="white"
               onClick={() => dispatch({ type: "deleteTodo", payload: todo })}

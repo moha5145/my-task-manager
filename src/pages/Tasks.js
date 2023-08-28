@@ -1,12 +1,8 @@
 import React from "react";
-import { useLocation } from "react-router";
+
 import Task from "../components/main/tasks/Task";
 
-const Tasks = ({ state, dispatch }) => {
-  const location = useLocation();
-
-  const { category } = location?.state;
-
+const Tasks = ({ state, category, dispatch }) => {
   return (
     <div className="flex flex-col flex-grow">
       <Task

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { Delete, Edit } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
 import ColoredButton from "../../custom/buttons/ColoredButton";
@@ -10,12 +9,6 @@ const Category = ({ category, state, dispatch, showModal, setShowModal }) => {
   const onDelete = () => {
     dispatch({ type: "deleteCategory", payload: category.slug });
   };
-
-  // console.log("chaltu", chala);
-  // useEffect(() => {
-  //   dispatch({ type: "copyCategory", payload: category && category });
-  //   console.log("copy");
-  // }, [dispatch, category]);
 
   const primaryColor = category.color.primary || state.defaultColor.primary;
 
@@ -37,14 +30,14 @@ const Category = ({ category, state, dispatch, showModal, setShowModal }) => {
       </div>
       <div className="flex gap-2 font-bold text-2xl mx-4">
         <Modal
-          Icon={EditIcon}
+          Icon={Edit}
           state={state}
           dispatch={dispatch}
           type="edit"
           category={category}
         />
         <ColoredButton
-          Icon={DeleteIcon}
+          Icon={Delete}
           backgroundColor={primaryColor}
           text="Suprimer"
           onClick={onDelete}

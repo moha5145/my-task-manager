@@ -1,5 +1,5 @@
 import React from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MoreVert } from "@mui/icons-material";
 
 import IconButton from "../../custom/buttons/IconButton";
 
@@ -10,7 +10,7 @@ const ColHeader = ({
   dispatch,
   columnIndex,
 }) => {
-  console.log("column", column);
+  // console.log("column", column);
   return (
     <div className="relative inline-block text-left">
       <div
@@ -19,7 +19,7 @@ const ColHeader = ({
       >
         {column.title}
         <IconButton
-          Icon={MoreVertIcon}
+          Icon={MoreVert}
           onClick={() => {
             // setShowMenu(!showMenu);
             dispatch({

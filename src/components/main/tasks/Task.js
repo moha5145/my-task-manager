@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { nested, priorityStyle } from "../../Reducer";
+import { priorityStyle } from "../../Reducer";
 
 import TaskHeader from "./TaskHeader";
-import AddTask from "./AddTask";
-import Accordion from "./accordion/Accordion";
 import Columns from "./Columns";
 
 const Task = ({ state, category, dispatch }) => {
@@ -13,18 +11,6 @@ const Task = ({ state, category, dispatch }) => {
 
   const dragItem = useRef();
   const dragItemNode = useRef();
-
-  const todosNestedInCategory = nested(state.categorys, state.newTodos);
-  const currCategory = todosNestedInCategory.find(
-    (item) => item.id === category.id
-  );
-
-  useEffect(() => {
-    dispatch({
-      type: "updateColumns",
-      payload: { currCategory: currCategory },
-    });
-  }, [state.newTodos]);
 
   const handletDragStart = (e, item) => {
     setDragging(true);
@@ -35,9 +21,10 @@ const Task = ({ state, category, dispatch }) => {
     setTimeout(() => setDragging(true), 0);
   };
 
-  const handleDragEnter = (event, targetItem) => {
+  const handleDragEnter = (event, targetItem, columns) => {
+    // console.log("columns columns", columns);
     const currentItem = dragItem.current;
-    const newList = [...state.columns];
+    const newList = [...columns];
 
     if (dragItemNode.current !== event.target) {
       const sourceTasks = newList[currentItem.columnIndex].todos;
@@ -70,13 +57,13 @@ const Task = ({ state, category, dispatch }) => {
       <TaskHeader
         state={state}
         category={category}
-        currCategory={currCategory}
+        // currCategory={category}
         dispatch={dispatch}
       />
 
       <div
         className="flex w-full justify-center items-start flex-grow "
-        style={{ backgroundColor: currCategory?.color?.secondary }}
+        style={{ backgroundColor: category?.color?.secondary }}
       >
         <Columns
           state={state}

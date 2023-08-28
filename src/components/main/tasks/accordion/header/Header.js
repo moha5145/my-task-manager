@@ -1,13 +1,6 @@
 import React from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { ExpandMore, ExpandLess, DragIndicator } from "@mui/icons-material";
 
-// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-// import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-
-// import ColoredButton from "../../../../buttons/ColoredButton";
-// import FlatButton from "../../../../custom/buttons/FlatButton";
 import IconButton from "../../../../custom/buttons/IconButton";
 import CustomInput from "../../../../custom/inputs/CustomInput";
 
@@ -30,7 +23,7 @@ const AccordionHeader = ({
   // const outlineColor = getOutlineColor();
   return (
     <div className="flex w-full  gap-2 mb-1 justify-between items-center">
-      <DragIndicatorIcon />
+      <DragIndicator />
 
       {/* <input
         // autoFocus
@@ -93,7 +86,7 @@ const AccordionHeader = ({
       ) : null}
       <div className="">
         <IconButton
-          Icon={todo.expanded ? ExpandLessIcon : ExpandMoreIcon}
+          Icon={todo.expanded ? ExpandLess : ExpandMore}
           color={category.color.primary}
           onClick={() => {
             dispatch({ type: "expanded", payload: todo });

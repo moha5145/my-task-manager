@@ -1,12 +1,12 @@
 import React from "react";
 import slugify from "react-slugify";
 import { uid } from "uid";
-import SaveIcon from "@mui/icons-material/Save";
-import BackspaceIcon from "@mui/icons-material/Backspace";
+import { Link } from "react-router-dom";
+import { Save, Backspace } from "@mui/icons-material";
+// import BackspaceIcon from "@mui/icons-material/Backspace";
 
 import FlatButton from "../../../custom/buttons/FlatButton";
 import ColoredButton from "../../../custom/buttons/ColoredButton";
-import { Link } from "react-router-dom";
 import CustomInput from "../../../custom/inputs/CustomInput";
 
 const Form = ({ state, category, dispatch, setShowModal, type }) => {
@@ -16,16 +16,51 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
+    const categoryId = uid();
     const updatePayload = {
-      id: category?.id || uid(),
+      id: category?.id || categoryId,
       name: state.name || category?.name,
       slug: slugify(category?.name),
       type: type,
+      columns: category?.columns || [],
       todos: category?.todos || [],
     };
 
     dispatch({ type: "updateCategory", payload: updatePayload });
+
+    dispatch({
+      type: "addIntialColumns",
+      payload: {
+        todo: {
+          id: uid(),
+          categoryId,
+          title: "todo",
+          color: "red",
+          taskTitle: "",
+          showMenu: false,
+          columns: [],
+          todos: [],
+        },
+        inProgress: {
+          id: uid(),
+          categoryId,
+          title: "inProgress",
+          color: "orange",
+          taskTitle: "",
+          showMenu: false,
+          todos: [],
+        },
+        completed: {
+          id: uid(),
+          categoryId,
+          title: "completed",
+          color: "lightgreen",
+          taskTitle: "",
+          showMenu: false,
+          todos: [],
+        },
+      },
+    });
 
     setShowModal(false);
   };
@@ -83,7 +118,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
           text="Annuler"
           onClick={onCancel}
           color="red"
-          Icon={BackspaceIcon}
+          Icon={Backspace}
         />
 
         <ColoredButton
@@ -92,7 +127,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
           onClick={onSubmit}
           as={Link}
           to={`/${slug}`}
-          Icon={SaveIcon}
+          Icon={Save}
         />
       </div>
     </form>

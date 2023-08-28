@@ -11,7 +11,7 @@ const DatePicker = ({ state, dispatch, todo, category, focus, setFocus }) => {
         name="trip-start"
         onChange={(e) => {
           e.preventDefault();
-          console.log("e.target.value", e.target.value);
+          // console.log("e.target.value", e.target.value);
           dispatch({
             type: "updateTodos",
             payload: {

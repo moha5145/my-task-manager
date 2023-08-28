@@ -6,36 +6,36 @@ const defaultData = [
 ];
 
 const sumArray = [1, 2, 3, 4, 5];
-console.log("sumArray", sumArray);
+// console.log("sumArray", sumArray);
 
 const dubleArray = sumArray.map((item) => item * 2);
-console.log("dubleArray", dubleArray);
+// console.log("dubleArray", dubleArray);
 const evnArray = sumArray.filter((item) => item % 2 === 0);
-console.log("evnArray", evnArray);
+// console.log("evnArray", evnArray);
 const oddArray = sumArray.filter((item) => item % 2 !== 0);
 
-console.log("oddArray", oddArray);
+// console.log("oddArray", oddArray);
 
 const maxValueArray = sumArray.reduce((max, currItem) =>
   Math.max(max, currItem)
 );
 
-console.log("maxValueArray", maxValueArray);
+// console.log("maxValueArray", maxValueArray);
 
 const minValueArray = sumArray.reduce((min, currItem) =>
   Math.min(min, currItem)
 );
 
-console.log("minValueArray", minValueArray);
+// console.log("minValueArray", minValueArray);
 
 const sumValueArray = sumArray.reduce(
   (totalValue, value) => totalValue + value,
   0
 );
-console.log("sumValueArray", sumValueArray);
+// console.log("sumValueArray", sumValueArray);
 
 const isOddValue = sumArray.some((item) => item % 2 !== 0);
-console.log("isOddValue", isOddValue);
+// console.log("isOddValue", isOddValue);
 
 const userList = [
   { name: "chala", gender: "M", salery: 35000 },
@@ -49,7 +49,7 @@ const upGradedMansSalery = userList
   .map((user) => user.salery + 1000)
   .reduce((totalSalery, salery) => totalSalery + salery, 0);
 
-console.log("upGradedMansSalery", upGradedMansSalery);
+// console.log("upGradedMansSalery", upGradedMansSalery);
 
 function DragNDrop() {
   const [list, setList] = useState(defaultData);
@@ -63,7 +63,7 @@ function DragNDrop() {
   const dragItemNode = useRef();
 
   const handletDragStart = (e, item) => {
-    console.log("Starting to drag", item);
+    // console.log("Starting to drag", item);
 
     dragItem.current = item;
     dragItemNode.current = e.target;
@@ -74,9 +74,9 @@ function DragNDrop() {
     }, 0);
   };
   const handleDragEnter = (e, targetItem) => {
-    console.log("Entering a drag target", targetItem);
+    // console.log("Entering a drag target", targetItem);
     if (dragItemNode.current !== e.target) {
-      console.log("Target is NOT the same as dragged item");
+      // console.log("Target is NOT the same as dragged item");
       let newList = JSON.parse(JSON.stringify(list));
       newList[targetItem.grpI].items.splice(
         targetItem.itemI,
@@ -88,13 +88,13 @@ function DragNDrop() {
       );
       dragItem.current = targetItem;
       // localStorage.setItem("List", JSON.stringify(newList));
-      console.log("newList", newList);
+      // console.log("newList", newList);
       // return newList;
       setList(newList);
     }
   };
   const handleDragEnd = (e) => {
-    console.log("list", list);
+    // console.log("list", list);
     setDragging(false);
     dragItemNode.current.removeEventListener("dragend", handleDragEnd);
     dragItem.current = null;

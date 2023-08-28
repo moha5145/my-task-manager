@@ -1,14 +1,13 @@
 import "./App.css";
-
+import { useEffect, useReducer, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Header from "./components/header";
 import Home from "./pages/Home";
 import Footer from "./components/footer";
-import { useEffect, useReducer, useState } from "react";
-
-import { init, reducer, nested } from "./components/Reducer";
 import Tasks from "./pages/Tasks";
+
+import { init, reducer, nestCategories } from "./components/Reducer";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, init);
@@ -20,8 +19,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setCategorys(nested(state.categorys, state.newTodos));
-  }, [state.categorys, state.newTodos]);
+    setCategorys(
+      nestCategories(state.categorys, state.newTodos, state.columns)
+    );
+  }, [state.categorys, state.newTodos, state.columns]);
+  // console.log("categorys from App", categorys);
 
   return (
     <Router>
@@ -44,10 +46,21 @@ function App() {
           path="/create"
           element={<Tasks state={state} dispatch={dispatch} />}
         /> */}
-          <Route
-            path="/:slug"
-            element={<Tasks state={state} dispatch={dispatch} />}
-          />
+          {categorys?.map((category, index) => {
+            return (
+              <Route
+                key={category.id}
+                path={`/${category.slug}`}
+                element={
+                  <Tasks
+                    state={state}
+                    category={category}
+                    dispatch={dispatch}
+                  />
+                }
+              />
+            );
+          })}
         </Routes>
         <Footer />
       </div>

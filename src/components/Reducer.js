@@ -21,47 +21,45 @@ export const init = {
   taskName: "",
   taskNameUpdate: "",
 
-  columns: [
-    {
-      id: "1f0fab8d0c8",
-      title: "todo",
-      color: "red",
-      taskTitle: "",
-      showMenu: false,
-      todos: [],
-    },
-    {
-      id: "f0fab8d0c8f",
-      title: "inProgress",
-      color: "orange",
-      taskTitle: "",
-      showMenu: false,
-      todos: [],
-    },
-    {
-      id: "0fab8d0c8f8",
-      title: "completed",
-      color: "lightgreen",
-      taskTitle: "",
-      showMenu: false,
-      todos: [],
-    },
-  ],
+  columns: [],
 };
 
-export const nested = (categories, newTodos, linkProperty = "categoryId") => {
-  const nest = (items, parentId = null) =>
-    items.map((item) => ({
-      ...item,
-      todos: nest(newTodos.filter((todo) => todo[linkProperty] === item.id)),
-    }));
+export const nestCategories = (
+  categories,
+  todos,
+  columns,
+  linkProperty = "categoryId"
+) => {
+  const nest = (items, parentId = null) => {
+    return items.map((item) => {
+      const filteredColumns = columns.filter(
+        (column) => column.categoryId === item.id
+      );
+      const filteredTodos = todos.filter(
+        (todo) => todo[linkProperty] === item.id
+      );
+      const nestedColumns = filteredColumns.map((col) => {
+        const nestedTodos = filteredTodos.filter(
+          (todo) => todo.status === col.title
+        );
+        return {
+          ...col,
+          todos: nestedTodos,
+        };
+      });
+      return {
+        ...item,
+        columns: nestedColumns,
+      };
+    });
+  };
 
   const nestedCategories = nest(categories);
   return nestedCategories;
 };
 
 const updateCategory = (state, action) => {
-  const { name, color, slug, id, type, todos } = action.payload;
+  const { name, color, slug, id, type, columns } = action.payload;
   const defaultColor = state.defaultColor;
 
   if (type === "edit") {
@@ -72,7 +70,7 @@ const updateCategory = (state, action) => {
             name: name || category.name,
             color: color || category.color,
             slug: slug || category.slug,
-            todos: [],
+            columns: [],
           }
         : category
     );
@@ -84,11 +82,10 @@ const updateCategory = (state, action) => {
       name,
       color: color || defaultColor,
       slug: slug || id,
-      todos: todos || [],
+      columns: columns || [],
     },
     ...state.categorys,
   ];
-  // console.log("copy 2");
   return category;
 };
 
@@ -97,9 +94,10 @@ const deleteCategory = (state, action) => {
 };
 
 const taskTitle = (state, action) => {
-  const { columnIndex, title, column } = action.payload;
+  const { title, column } = action.payload;
   const newColumns = [...state.columns];
-  const updatedColumns = newColumns.map((item, index) => {
+
+  const updatedColumns = newColumns.map((item) => {
     return {
       ...item,
       taskTitle: item.title === column.title ? title : "",
@@ -156,7 +154,7 @@ export const resizeTextArea = (textAreaRef) => {
 
 const onUpdateTodo = (state, action) => {
   const { id, details, title, priority, status, dueDate } = action.payload;
-  // console.log("priority", priority);
+
   const newTodos = state.newTodos.map((todo) => {
     return id === todo.id
       ? {
@@ -185,7 +183,6 @@ export const priorityStyle = (todo) => {
 };
 
 const filterTodosByCategory = (todos, id) => {
-  // console.log("todos", todos);
   return todos.filter((todo) => todo?.categoryId === id);
 };
 
@@ -225,12 +222,28 @@ const deleteTodo = (state, action) => {
 const moveItemUpAndDown = (state, action) => {
   const { newList } = action.payload;
 
-  const changeStatus = newList.map((items) => ({
-    ...items,
-    todos: items.todos.map((todo) => ({ ...todo, status: items.title })),
-  }));
+  const withoutCurrCategory = todosWithoutCurrentCategory(
+    state.todos,
+    action.payload.category.id
+  );
 
-  return changeStatus;
+  const changeStatus = newList.map((columns) => {
+    const todos = columns.todos.map((todo) => ({
+      ...todo,
+      status: columns.title,
+    }));
+    return {
+      ...columns,
+      todos,
+    };
+  });
+  const flatedTodos = changeStatus
+    .flatMap((curr) => curr.todos)
+    .filter(Boolean);
+
+  const updatedNewTodos = withoutCurrCategory.concat(flatedTodos);
+
+  return updatedNewTodos;
 };
 
 const toggleExpanded = (state, action) => {
@@ -275,16 +288,22 @@ export const reducer = (state, action) => {
         ...state,
         newTodos: [...state.todos],
       };
+    case "addIntialColumns":
+      const { todo, inProgress, completed } = action.payload;
+      return {
+        ...state,
+        columns: [...state.columns, todo, inProgress, completed],
+      };
+    case "addNewColumn":
+      return {
+        ...state,
+        columns: [...state.columns, action.payload],
+      };
     case "updateColumns":
       const columns = updateColumns(state, action);
       return {
         ...state,
         columns: columns,
-      };
-    case "addColumn":
-      return {
-        ...state,
-        columns: [...state.columns, action.payload],
       };
     case "deleteColumn":
       const { column } = action.payload;
@@ -320,7 +339,6 @@ export const reducer = (state, action) => {
         columns: resetTaskTitle,
       };
     case "updateTodos":
-      // console.log("state.newTodos", state.newTodos);
       const updatedTodos = onUpdateTodo(state, action);
       return {
         ...state,
@@ -340,21 +358,9 @@ export const reducer = (state, action) => {
         newTodos: deletedTodo,
       };
     case "moveUpAndDown":
-      const withoutCurrCategory = todosWithoutCurrentCategory(
-        state.todos,
-        action.payload.category.id
-      );
-
-      const reorderedTodos = moveItemUpAndDown(state, action);
-
-      const flatedTodos = reorderedTodos
-        .flatMap((curr) => curr.todos)
-        .filter(Boolean);
-
-      const updatedNewTodos = withoutCurrCategory.concat(flatedTodos);
+      const updatedNewTodos = moveItemUpAndDown(state, action);
       return {
         ...state,
-        columns: reorderedTodos,
         newTodos: updatedNewTodos,
       };
     case "expanded":

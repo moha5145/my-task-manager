@@ -1,8 +1,5 @@
 import React, { useEffect } from "react";
-import slugify from "react-slugify";
-import { uid } from "uid";
-import SaveIcon from "@mui/icons-material/Save";
-import BackspaceIcon from "@mui/icons-material/Backspace";
+import { Save, Backspace } from "@mui/icons-material";
 
 import ColorTable from "./ColorTabel";
 import FlatButton from "../../../custom/buttons/FlatButton";
@@ -36,7 +33,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
 
       <div className="flex gap-2 text-xl font-bold justify-between mx-1">
         <FlatButton
-          Icon={BackspaceIcon}
+          Icon={Backspace}
           state={state}
           category={type === "edit" ? category : null}
           dispatch={dispatch}
@@ -45,7 +42,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
           color="red"
         />
         <ColoredButton
-          Icon={SaveIcon}
+          Icon={Save}
           backgroundColor="#62C188"
           text="Valider"
           onClick={onSubmit}
