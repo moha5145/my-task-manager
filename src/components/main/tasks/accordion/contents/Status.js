@@ -41,7 +41,7 @@ const Status = ({ state, dispatch, todo, category, focus, setFocus }) => {
             : { outline: "none", border: "none", ring: "none" }
         }
       >
-        {state.columns.map((column) => (
+        {category.columns.map((column) => (
           <option key={column.id} value={column.title}>
             {column.title}
           </option>

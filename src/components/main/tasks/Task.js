@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { priorityStyle } from "../../Reducer";
 
@@ -9,7 +9,7 @@ const Task = ({ state, category, dispatch }) => {
   const [dragging, setDragging] = useState(false);
   const [focus, setFocus] = useState(false);
 
-  const dragItem = useRef();
+  const dragItem = useRef({});
   const dragItemNode = useRef();
 
   const handletDragStart = (e, item) => {
@@ -45,12 +45,12 @@ const Task = ({ state, category, dispatch }) => {
   };
   const getStyles = (item) => {
     if (
-      dragItem.current.columnIndex === item.columnIndex &&
+      dragItem.current?.columnIndex === item.columnIndex &&
       dragItem.current.todoIndex === item.todoIndex
     ) {
-      return `  bg-red-400 rounded-md border-l-8 pr-1`;
+      return `bg-red-400 rounded-lg border-l-8 pr-1 mb-2`;
     }
-    return ` bg-yellow-400 rounded-md border-l-8 pr-1`;
+    return `bg-yellow-400 rounded-lg border-l-8 pr-1 mb-2`;
   };
   return (
     <div className=" flex flex-col flex-grow justify-between ">

@@ -5,15 +5,16 @@ import { Save, Add, Remove } from "@mui/icons-material";
 const AddColumn = ({ dispatch, category }) => {
   const [showInput, setShowInput] = useState(false);
   const [columnName, setColumnName] = useState("");
+  const [focus, setFocus] = useState(false);
 
   return (
-    <div className="fixed bottom-[5.8%] right-10 flex gap-3 shadow-xl h-14">
+    <div className="flex gap-1 sm:gap-3 fixed bottom-[5.8%] right-2 sm:right-10 h-10 sm:h-12">
       {showInput ? (
         <input
           type="text"
           autoFocus
           placeholder="Add new column"
-          className="rounded-md p-2"
+          className="rounded-md p-2 shadow-xl"
           onChange={(e) => setColumnName(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === "Enter") {
@@ -32,12 +33,23 @@ const AddColumn = ({ dispatch, category }) => {
               setShowInput(false);
             }
           }}
+          onFocus={() => {
+            setFocus(true);
+          }}
+          onBlur={() => {
+            setFocus(false);
+          }}
+          style={
+            focus
+              ? { outlineColor: category?.color?.primary }
+              : { border: "none" }
+          }
         />
       ) : null}
 
       {showInput && columnName.length > 2 ? (
         <button
-          className="   bg-green-400 text-white rounded-md h-full px-3 hover:opacity-60"
+          className="   bg-green-400 text-white rounded-md h-full px-1 sm:px-3 hover:opacity-60 shadow-xl"
           onClick={() => {
             dispatch({
               type: "addNewColumn",
@@ -58,7 +70,7 @@ const AddColumn = ({ dispatch, category }) => {
         </button>
       ) : (
         <button
-          className="   bg-red-400 text-white rounded-md h-full px-3 text-center hover:opacity-60"
+          className="   bg-red-400 text-white rounded-md h-full px-1 sm:px-3 text-center hover:opacity-60 shadow-xl"
           onClick={() => {
             setShowInput(!showInput);
           }}

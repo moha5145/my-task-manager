@@ -72,6 +72,12 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
 
   const outlineColor = getOutlineColor();
   const slug = slugify(state?.name);
+  const bgColor = () => {
+    const prColor = category?.color?.primary;
+    if (!prColor || prColor === "#808080") return "#62C188";
+    return prColor;
+  };
+
   return (
     <form>
       {/* <label> */}
@@ -121,7 +127,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
         />
 
         <ColoredButton
-          backgroundColor="#62C188"
+          backgroundColor={bgColor()}
           text={type === "edit" ? "Valider" : "créer une liste"}
           onClick={onSubmit}
           as={Link}

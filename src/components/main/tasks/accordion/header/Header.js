@@ -25,34 +25,6 @@ const AccordionHeader = ({
     <div className="flex w-full  gap-2 mb-1 justify-between items-center">
       <DragIndicator />
 
-      {/* <input
-        // autoFocus
-        name="title"
-        placeholder="Title"
-        onChange={(e) => {
-          e.stopPropagation();
-          dispatch({
-            type: "updateTodos",
-            payload: {
-              title: e.target.value,
-              id: todo.id,
-            },
-          });
-        }}
-        defaultValue={todo.title}
-        onFocus={() => {
-          setFocus(true);
-        }}
-        onBlur={() => {
-          setFocus(false);
-        }}
-        style={
-          focus
-            ? { outlineColor: category?.color?.primary }
-            : { border: "none" }
-        }
-        className={`h-auto px-1 mx-0 py-2 my-0 w-full overflow-y-hidden resize-non focus:outline-indigo-[${category.color.primary}] border-solid rounded-md decoration-2`}
-      /> */}
       <CustomInput
         placeholder="title"
         defaultValue={todo.title}

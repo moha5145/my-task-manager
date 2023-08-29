@@ -5,7 +5,7 @@ import ColorTable from "./ColorTabel";
 import FlatButton from "../../../custom/buttons/FlatButton";
 import ColoredButton from "../../../custom/buttons/ColoredButton";
 
-const Form = ({ state, category, dispatch, setShowModal, type }) => {
+const Form = ({ state, category, dispatch, setShowModal, type, color }) => {
   const onCancel = () => {
     setShowModal(false);
   };
@@ -43,7 +43,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
         />
         <ColoredButton
           Icon={Save}
-          backgroundColor="#62C188"
+          backgroundColor={color}
           text="Valider"
           onClick={onSubmit}
         />

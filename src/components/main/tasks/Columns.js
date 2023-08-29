@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import Accordion from "./accordion/Accordion";
 import AddTask from "./AddTask";
@@ -20,12 +20,14 @@ const Column = ({
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:h-full py-2 justify-center items-start md:pr-12">
+    <div
+      className="w-full sm:flex flex-wrap justify-center
+       py-2 md:pr-12"
+    >
       {category.columns.map((column, columnIndex) => {
-        console.log("column form Column", column);
         return (
           <div
-            className="col-span-1  h-full overflow-y-auto  border px-2 gap-2 "
+            className="w-full sm:w-96 min-h-[300px] overflow-y-auto border px-2 gap-2 "
             key={column.id}
             onDragEnter={
               dragging && !column.todos.length
@@ -40,6 +42,7 @@ const Column = ({
           >
             <ColHeader
               column={column}
+              category={category}
               showMenu={showMenu}
               setShowMenu={setShowMenu}
               dispatch={dispatch}

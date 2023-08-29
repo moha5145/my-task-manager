@@ -10,7 +10,6 @@ import Modal from "./modal/Modal";
 import { activeSaveButton } from "../../Reducer";
 
 const TasksHeader = ({ state, category, dispatch, type }) => {
-  // console.log("category from TasksHeader", category);
   const navigate = useNavigate();
   const isSaveButtonActive = activeSaveButton(state, category);
 
@@ -19,15 +18,17 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
     dispatch({ type: "saveTodos", payload: category });
   };
 
+  const btnColor = category?.color?.primary || "#22c55e";
   return (
-    <div className="flex flex-wrap w-full justify-between items-center py-4 gap-2 px-2">
+    <div className="sticky top-0 z-40 flex flex-wrap w-full justify-between items-center py-2 sm:py-4 gap-2 px-2 bg-white">
       <div className="flex gap-2">
         <FlatButton
           Icon={ArrowBack}
           text="Retour"
-          color={`${category?.color?.primary} || #22c55e`}
+          color={btnColor}
+          p={1}
           onClick={(e) => {
-            saveTodos(e);
+            !isSaveButtonActive && saveTodos(e);
             navigate(-1);
           }}
         />
@@ -36,7 +37,8 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           disabled={isSaveButtonActive}
           text="Sauvegarder"
           Icon={Save}
-          backgroundColor={isSaveButtonActive ? "#dddbdb" : "#22c55e"}
+          p={1}
+          backgroundColor={isSaveButtonActive ? "#dddbdb" : btnColor}
           onClick={saveTodos}
         />
       </div>
@@ -50,11 +52,13 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           dispatch={dispatch}
           type="edit"
           category={category}
+          color={btnColor}
         />
         <FlatButton
           text="Supprimer"
           color="#ef4444"
           Icon={Delete}
+          p={1}
           onClick={() => {
             dispatch({ type: "deleteCategory", payload: category.slug });
             navigate("/");

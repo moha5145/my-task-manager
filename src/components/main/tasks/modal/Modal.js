@@ -4,7 +4,7 @@ import { ColorLens } from "@mui/icons-material";
 import Form from "./Form";
 import ColoredButton from "../../../custom/buttons/ColoredButton";
 
-export default function Modal({ state, dispatch, type, category }) {
+export default function Modal({ state, dispatch, type, category, color }) {
   const [showModal, setShowModal] = useState(false);
 
   const onEdit = () => {
@@ -16,7 +16,7 @@ export default function Modal({ state, dispatch, type, category }) {
       <ColoredButton
         text="Theme"
         Icon={ColorLens}
-        backgroundColor="#22c55e"
+        backgroundColor={color}
         onClick={onEdit}
       />
 
@@ -49,6 +49,7 @@ export default function Modal({ state, dispatch, type, category }) {
                   dispatch={dispatch}
                   type={type}
                   category={category}
+                  color={color}
                 />
               </div>
             </div>

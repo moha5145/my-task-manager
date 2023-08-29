@@ -3,12 +3,12 @@ import { MoreVert } from "@mui/icons-material";
 
 import IconButton from "../../custom/buttons/IconButton";
 
-const ColHeader = ({ column, dispatch, columnIndex }) => {
+const ColHeader = ({ column, category, dispatch, columnIndex }) => {
   return (
     <div className="w-full relative inline-block text-left">
       <div
         className={`flex relative max-h-[40px] items-center justify-between text-white text-lg rounded-md p-2 uppercase my-3`}
-        style={{ backgroundColor: "grey" }}
+        style={{ backgroundColor: category.color.primary }}
       >
         {column.title}
         <IconButton
