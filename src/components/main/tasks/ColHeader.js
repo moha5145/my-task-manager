@@ -3,16 +3,9 @@ import { MoreVert } from "@mui/icons-material";
 
 import IconButton from "../../custom/buttons/IconButton";
 
-const ColHeader = ({
-  column,
-  showMenu,
-  setShowMenu,
-  dispatch,
-  columnIndex,
-}) => {
-  // console.log("column", column);
+const ColHeader = ({ column, dispatch, columnIndex }) => {
   return (
-    <div className="relative inline-block text-left">
+    <div className="w-full relative inline-block text-left">
       <div
         className={`flex relative max-h-[40px] items-center justify-between text-white text-lg rounded-md p-2 uppercase my-3`}
         style={{ backgroundColor: "grey" }}
@@ -21,10 +14,9 @@ const ColHeader = ({
         <IconButton
           Icon={MoreVert}
           onClick={() => {
-            // setShowMenu(!showMenu);
             dispatch({
               type: "showMenu",
-              payload: { showMenu: !column.showMenu, columnIndex },
+              payload: { showMenu: !column.showMenu, columnIndex, column },
             });
           }}
           color="white"

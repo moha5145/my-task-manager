@@ -95,14 +95,17 @@ const deleteCategory = (state, action) => {
 
 const taskTitle = (state, action) => {
   const { title, column } = action.payload;
+  console.log("action.payload", action.payload);
   const newColumns = [...state.columns];
 
   const updatedColumns = newColumns.map((item) => {
+    console.log("item", item);
     return {
       ...item,
       taskTitle: item.title === column.title ? title : "",
     };
   });
+  console.log("title", title);
   return updatedColumns;
 };
 const updateColumns = (state, action) => {
@@ -118,14 +121,14 @@ const updateColumns = (state, action) => {
 };
 
 const showColumnMenu = (state, action) => {
-  const { columnIndex, showMenu } = action.payload;
-  const columns = state.columns.map((column, index) => {
-    return {
-      ...column,
-      showMenu: index === columnIndex ? showMenu : column.showMenu,
-    };
-  });
-  return columns;
+  const { showMenu, column } = action.payload;
+
+  const updatedColumns = state.columns.map((col) => ({
+    ...col,
+    showMenu: col.id === column.id ? showMenu : col.showMenu,
+  }));
+
+  return updatedColumns;
 };
 
 const addTodo = (state, action) => {
@@ -329,10 +332,12 @@ export const reducer = (state, action) => {
       };
     case "addTodo":
       const addedTodos = addTodo(state, action);
+      console.log("state.columns", state.columns);
       const resetTaskTitle = state.columns.map((column) => ({
         ...column,
         taskTitle: "",
       }));
+      console.log("resetTaskTitle", resetTaskTitle);
       return {
         ...state,
         newTodos: addedTodos,

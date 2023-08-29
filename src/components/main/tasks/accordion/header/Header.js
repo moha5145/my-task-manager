@@ -55,7 +55,7 @@ const AccordionHeader = ({
       /> */}
       <CustomInput
         placeholder="title"
-        value={todo.title}
+        defaultValue={todo.title}
         category={category}
         className={`h-auto px-1 mx-0 py-2 my-0 w-full  overflow-y-hidden resize-non focus:outline-indigo-[${category.color.primary}] border-solid rounded-md decoration-2`}
         onChange={(e) => {

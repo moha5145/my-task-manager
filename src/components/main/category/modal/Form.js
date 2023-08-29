@@ -38,7 +38,6 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
           color: "red",
           taskTitle: "",
           showMenu: false,
-          columns: [],
           todos: [],
         },
         inProgress: {
@@ -97,7 +96,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
           state={state}
           dispatch={dispatch}
           category={category}
-          value={type === "edit" ? category?.name : state.name}
+          defaultValue={type === "edit" ? category?.name : state.name}
           type={type}
           className="p-2 w-full rounded-md peer outline m-1 mb-3"
           style={{

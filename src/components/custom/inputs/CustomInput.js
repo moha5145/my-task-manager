@@ -6,6 +6,7 @@ const CustomInput = ({
   category,
   state,
   onChange,
+  defaultValue = "",
   value = "",
   placeholder,
   onFocus = null,
@@ -19,7 +20,7 @@ const CustomInput = ({
     <input
       onChange={onChange}
       onKeyDown={onKeyDown}
-      value={value}
+      defaultValue={defaultValue}
       autoFocus={autoFocus}
       onFocus={onFocus}
       onBlur={onBlur}

@@ -20,12 +20,12 @@ const Column = ({
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="flex flex-wrap md:h-full py-2 justify-center items-start md:pr-12">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:h-full py-2 justify-center items-start md:pr-12">
       {category.columns.map((column, columnIndex) => {
         console.log("column form Column", column);
         return (
           <div
-            className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:1/5 h-full overflow-y-auto  border px-2 gap-2 "
+            className="col-span-1  h-full overflow-y-auto  border px-2 gap-2 "
             key={column.id}
             onDragEnter={
               dragging && !column.todos.length
@@ -55,7 +55,6 @@ const Column = ({
               setFocus={setFocus}
               status={column.title}
               autoFocus={columnIndex === 0}
-              value={state.columns[columnIndex].taskTitle}
               columnIndex={columnIndex}
             />
             {column.todos?.map((todo, todoIndex) => {
@@ -68,7 +67,7 @@ const Column = ({
                   className={
                     dragging
                       ? getStyles({ columnIndex, todoIndex })
-                      : ` rounded-lg w-full border-l-8 cursor-grab active:cursor-grabbing bg-white pr-1`
+                      : ` rounded-lg w-full border-l-8 cursor-grab active:cursor-grabbing bg-white pr-1 mb-2`
                   }
                   style={{
                     borderColor: border,

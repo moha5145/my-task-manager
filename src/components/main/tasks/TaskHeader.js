@@ -25,7 +25,7 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
         <FlatButton
           Icon={ArrowBack}
           text="Retour"
-          color="#22c55e"
+          color={`${category?.color?.primary} || #22c55e`}
           onClick={(e) => {
             saveTodos(e);
             navigate(-1);

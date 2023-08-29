@@ -7,7 +7,7 @@ const AddColumn = ({ dispatch, category }) => {
   const [columnName, setColumnName] = useState("");
 
   return (
-    <div className="fixed top-[21.8%] right-3 flex gap-3 shadow-2xl h-10">
+    <div className="fixed bottom-[5.8%] right-10 flex gap-3 shadow-xl h-14">
       {showInput ? (
         <input
           type="text"
@@ -37,7 +37,7 @@ const AddColumn = ({ dispatch, category }) => {
 
       {showInput && columnName.length > 2 ? (
         <button
-          className="   bg-green-400 text-white rounded-md h-full px-2 "
+          className="   bg-green-400 text-white rounded-md h-full px-3 hover:opacity-60"
           onClick={() => {
             dispatch({
               type: "addNewColumn",
@@ -54,16 +54,16 @@ const AddColumn = ({ dispatch, category }) => {
             setShowInput(false);
           }}
         >
-          <Save />
+          <Save fontSize="large" />
         </button>
       ) : (
         <button
-          className="   bg-red-400 text-white rounded-md h-full px-2 text-center"
+          className="   bg-red-400 text-white rounded-md h-full px-3 text-center hover:opacity-60"
           onClick={() => {
             setShowInput(!showInput);
           }}
         >
-          {showInput ? <Remove /> : <Add />}
+          {showInput ? <Remove fontSize="large" /> : <Add fontSize="large" />}
         </button>
       )}
     </div>
