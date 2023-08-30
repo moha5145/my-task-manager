@@ -7,7 +7,6 @@ const CustomInput = ({
   state,
   onChange,
   defaultValue = "",
-  value = "",
   placeholder,
   onFocus = null,
   onBlur = null,

@@ -21,6 +21,23 @@ const AccordionHeader = ({
   // };
 
   // const outlineColor = getOutlineColor();
+
+  const dueDate = () => {
+    const currDate = new Date();
+    const today = currDate.toISOString().split("T")[0];
+    currDate.setDate(currDate.getDate() + 1);
+    const tomorrow = currDate.toISOString().split("T")[0];
+
+    switch (todo.dueDate) {
+      case today:
+        return "Ajourd'hui";
+      case tomorrow:
+        return "Demain";
+      default:
+        return new Date(todo.dueDate).toLocaleDateString();
+    }
+  };
+
   return (
     <div className="flex w-full  gap-2 mb-1 justify-between items-center">
       <DragIndicator />
@@ -52,9 +69,7 @@ const AccordionHeader = ({
         }
       />
       {todo.dueDate ? (
-        <div className="text-xs min-w-[65px]">
-          {new Date(todo.dueDate).toLocaleDateString()}
-        </div>
+        <div className="text-xs min-w-[65px]">{dueDate()}</div>
       ) : null}
       <div className="">
         <IconButton

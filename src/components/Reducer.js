@@ -95,17 +95,14 @@ const deleteCategory = (state, action) => {
 
 const taskTitle = (state, action) => {
   const { title, column } = action.payload;
-  console.log("action.payload", action.payload);
   const newColumns = [...state.columns];
 
   const updatedColumns = newColumns.map((item) => {
-    console.log("item", item);
     return {
       ...item,
       taskTitle: item.title === column.title ? title : "",
     };
   });
-  console.log("title", title);
   return updatedColumns;
 };
 const updateColumns = (state, action) => {
@@ -332,12 +329,10 @@ export const reducer = (state, action) => {
       };
     case "addTodo":
       const addedTodos = addTodo(state, action);
-      console.log("state.columns", state.columns);
       const resetTaskTitle = state.columns.map((column) => ({
         ...column,
         taskTitle: "",
       }));
-      console.log("resetTaskTitle", resetTaskTitle);
       return {
         ...state,
         newTodos: addedTodos,
