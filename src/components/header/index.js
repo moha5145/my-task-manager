@@ -1,8 +1,7 @@
 import React from "react";
 import { Lock } from "@mui/icons-material";
 
-// import ColoredButton from "../custom/buttons/ColoredButton";
-import FlatButton from "../custom/buttons/FlatButton";
+import FlatButton from "../shared/buttons/FlatButton";
 
 const Header = () => {
   return (
