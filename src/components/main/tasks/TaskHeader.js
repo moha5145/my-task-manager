@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import { Delete, Save, ArrowBack } from "@mui/icons-material";
 
-import FlatButton from "../../custom/buttons/FlatButton";
-import ColoredButton from "../../custom/buttons/ColoredButton";
+import FlatButton from "../../shared/buttons/FlatButton";
+import ColoredButton from "../../shared/buttons/ColoredButton";
 import Modal from "./modal/Modal";
 
 import { activeSaveButton } from "../../Reducer";

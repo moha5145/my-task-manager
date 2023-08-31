@@ -9,6 +9,7 @@ const ColoredButton = ({
   color = "",
   to = "",
   as = "button",
+  fontSize = "medium",
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -39,7 +40,7 @@ const ColoredButton = ({
       as={as}
       to={to}
     >
-      {Icon && <Icon />}
+      {Icon && <Icon fontSize={fontSize} />}
       {text && <span className="hidden sm:block ">{text}</span>}
     </button>
   );

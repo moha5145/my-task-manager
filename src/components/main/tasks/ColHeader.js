@@ -1,9 +1,13 @@
-import React from "react";
-import { MoreVert } from "@mui/icons-material";
+import React, { useState } from "react";
+import { MoreVert, ModeEdit, Delete } from "@mui/icons-material";
 
-import IconButton from "../../custom/buttons/IconButton";
+import IconButton from "../../shared/buttons/IconButton";
+import AddEditColumn from "../../shared/AddEditColumn";
+import FlatButton from "../../shared/buttons/FlatButton";
 
 const ColHeader = ({ column, category, dispatch, columnIndex }) => {
+  const [columnName, setColumnName] = useState("");
+
   return (
     <div className="w-full relative inline-block text-left">
       <div
@@ -24,28 +28,56 @@ const ColHeader = ({ column, category, dispatch, columnIndex }) => {
       </div>
       {column.showMenu ? (
         <div
-          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white 
+          shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
           tabIndex="-1"
         >
-          <div className="py-1 " role="none">
-            <button className="w-full text-right px-4 py-2 hover:bg-gray-200  rounded-md mb-2 hover:opacity-50">
-              Edit
-            </button>
+          <div className="flex flex-col w-full p-1 gap-2 " role="none">
+            <AddEditColumn
+              dispatch={dispatch}
+              column={column}
+              category={category}
+              Icon={ModeEdit}
+              fontSize="medium"
+              text="Modifier"
+              color={category?.color?.primary}
+              setColumnName={setColumnName}
+              columnName={columnName}
+              placeholder="Edit column title"
+              onClick={() => {
+                dispatch({
+                  type: "updateStatus",
+                  payload: { todos: column.todos, title: columnName },
+                });
+                dispatch({
+                  type: "updateColumnName",
+                  payload: {
+                    id: column.id,
+                    title: columnName || column.title,
+                  },
+                });
 
-            <button
-              className="w-full text-right px-4 py-2 hover:bg-gray-200 rounded-md mb-2 hover:opacity-50"
+                dispatch({
+                  type: "showMenu",
+                  payload: { showMenu: !column.showMenu, columnIndex, column },
+                });
+              }}
+            />
+
+            <FlatButton
+              Icon={Delete}
+              text="Suprimer"
+              color="red"
               onClick={() => {
                 dispatch({
                   type: "deleteColumn",
-                  payload: { column: column },
+                  payload: { column },
                 });
               }}
-            >
-              Delete
-            </button>
+            />
           </div>
         </div>
       ) : null}

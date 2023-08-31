@@ -8,8 +8,8 @@ export const init = {
   taskTitle: "",
   color: "",
   colorPalette: [
+    { primary: "#808080", secondary: "#E6E6E6" },
     { primary: "#62C188", secondary: "#D8EFE1" },
-    { primary: "#f7ce00", secondary: "#FDF5CB" },
     { primary: "#5D92BE", secondary: "#F1F4FF" },
     { primary: "#FF8138", secondary: "#FFDFCD" },
     { primary: "#B33FD6", secondary: "#ECCFF5" },
@@ -116,6 +116,16 @@ const updateColumns = (state, action) => {
   });
   return updatedColumns;
 };
+const changeColumnTitle = (state, action) => {
+  const { id, title } = action.payload;
+  const updatedCol = state.columns.map((column) => {
+    return {
+      ...column,
+      title: column.id === id ? title : column.title,
+    };
+  });
+  return updatedCol;
+};
 
 const showColumnMenu = (state, action) => {
   const { showMenu, column } = action.payload;
@@ -170,6 +180,16 @@ const onUpdateTodo = (state, action) => {
   return newTodos;
 };
 
+const updateStatusInColumn = (state, action) => {
+  const { todos, title } = action.payload;
+
+  const updatedNewTodos = state.newTodos.map((todo) => {
+    const isTodoUpdated = todos.some((elem) => elem.id === todo.id);
+    return isTodoUpdated ? { ...todo, status: title } : todo;
+  });
+
+  return updatedNewTodos;
+};
 export const priorityStyle = (todo) => {
   if (todo.priority === "high") {
     return "red";
@@ -299,6 +319,12 @@ export const reducer = (state, action) => {
         ...state,
         columns: [...state.columns, action.payload],
       };
+    case "updateColumnName":
+      const changeName = changeColumnTitle(state, action);
+      return {
+        ...state,
+        columns: changeName,
+      };
     case "updateColumns":
       const columns = updateColumns(state, action);
       return {
@@ -343,6 +369,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         newTodos: updatedTodos,
+      };
+    case "updateStatus":
+      const updatedStatus = updateStatusInColumn(state, action);
+      return {
+        ...state,
+        newTodos: updatedStatus,
       };
 
     case "saveTodos":

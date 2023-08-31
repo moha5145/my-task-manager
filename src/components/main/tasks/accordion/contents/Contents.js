@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Delete } from "@mui/icons-material";
 
-import ColoredButton from "../../../../custom/buttons/ColoredButton";
+import ColoredButton from "../../../../shared/buttons/ColoredButton";
 import Notes from "./Notes";
 import Priority from "./Priority";
 import DueDate from "./DueDate";

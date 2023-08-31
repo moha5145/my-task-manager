@@ -1,8 +1,8 @@
 import React from "react";
 import { ExpandMore, ExpandLess, DragIndicator } from "@mui/icons-material";
 
-import IconButton from "../../../../custom/buttons/IconButton";
-import CustomInput from "../../../../custom/inputs/CustomInput";
+import IconButton from "../../../../shared/buttons/IconButton";
+import CustomInput from "../../../../shared/inputs/CustomInput";
 
 const AccordionHeader = ({
   state,
@@ -14,14 +14,6 @@ const AccordionHeader = ({
   focus,
   setFocus,
 }) => {
-  // const getOutlineColor = () => {
-  //   return type === "edit"
-  //     ? state?.color?.primary || category?.color.primary
-  //     : state?.color?.primary || state.defaultColor.primary;
-  // };
-
-  // const outlineColor = getOutlineColor();
-
   const dueDate = () => {
     const currDate = new Date();
     const today = currDate.toISOString().split("T")[0];

@@ -1,9 +1,7 @@
 import React from "react";
 import { Add } from "@mui/icons-material";
 
-// import FlatButton from "../../custom/buttons/FlatButton";
-import IconButton from "../../custom/buttons/IconButton";
-import CustomInput from "../../custom/inputs/CustomInput";
+import IconButton from "../../shared/buttons/IconButton";
 
 const AddTask = ({
   column,
@@ -16,6 +14,12 @@ const AddTask = ({
   status,
   columnIndex,
 }) => {
+  const payload = {
+    category,
+    title: column.taskTitle,
+    status,
+    columnIndex,
+  };
   return (
     <div className="flex justify-between items-center gap-2 my-1 p-1  mb-2 max-h-[50px] bg-white rounded-md ">
       <input
@@ -33,12 +37,7 @@ const AddTask = ({
             e.preventDefault();
             dispatch({
               type: "addTodo",
-              payload: {
-                category,
-                title: column.taskTitle,
-                status,
-                columnIndex,
-              },
+              payload: payload,
             });
           }
         }}
@@ -65,12 +64,7 @@ const AddTask = ({
         onClick={() =>
           dispatch({
             type: "addTodo",
-            payload: {
-              category,
-              title: column.taskTitle,
-              status,
-              columnIndex,
-            },
+            payload: payload,
           })
         }
       />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ColorLens } from "@mui/icons-material";
 
 import Form from "./Form";
-import ColoredButton from "../../../custom/buttons/ColoredButton";
+import ColoredButton from "../../../shared/buttons/ColoredButton";
 
 export default function Modal({ state, dispatch, type, category, color }) {
   const [showModal, setShowModal] = useState(false);

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
-import ColoredButton from "../../custom/buttons/ColoredButton";
+import ColoredButton from "../../shared/buttons/ColoredButton";
 
 const Category = ({ category, state, dispatch, showModal, setShowModal }) => {
   const onDelete = () => {

@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import slugify from "react-slugify";
 import { uid } from "uid";
 import { Link } from "react-router-dom";
 import { Save, Backspace } from "@mui/icons-material";
 // import BackspaceIcon from "@mui/icons-material/Backspace";
 
-import FlatButton from "../../../custom/buttons/FlatButton";
-import ColoredButton from "../../../custom/buttons/ColoredButton";
-import CustomInput from "../../../custom/inputs/CustomInput";
+import FlatButton from "../../../shared/buttons/FlatButton";
+import ColoredButton from "../../../shared/buttons/ColoredButton";
+import CustomInput from "../../../shared/inputs/CustomInput";
+import ColorTable from "../../tasks/modal/ColorTabel";
 
 const Form = ({ state, category, dispatch, setShowModal, type }) => {
+  const [showColors, setShowColors] = useState(false);
+
   const onCancel = () => {
     setShowModal(false);
   };
@@ -22,6 +25,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
       name: state.name || category?.name,
       slug: slugify(category?.name),
       type: type,
+      color: state.color || category?.color,
       columns: category?.columns || [],
       todos: category?.todos || [],
     };
@@ -60,8 +64,12 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
         },
       },
     });
-
     setShowModal(false);
+  };
+
+  const show = (e) => {
+    e.preventDefault();
+    setShowColors(true);
   };
 
   const getOutlineColor = () => {
@@ -80,61 +88,75 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
 
   return (
     <form>
-      {/* <label> */}
-      <div className="pr-2">
-        <span>Nom de la liste</span>
-        {/* <input
-          onChange={(event) => {
-            dispatch({ type: "categoryName", payload: event.target.value });
-          }}
-          defaultValue={type === "edit" ? category?.name : state.name}
-          autoFocus
-          type="text"
-          placeholder="nom de la liste"
-          className="p-2 w-full rounded-md peer outline m-1 mb-3"
-          style={{
-            outline: `2px solid ${outlineColor}`,
-          }}
-        /> */}
-        <CustomInput
-          placeholder="Nom de la liste"
-          autoFocus={true}
-          state={state}
-          dispatch={dispatch}
-          category={category}
-          defaultValue={type === "edit" ? category?.name : state.name}
-          type={type}
-          className="p-2 w-full rounded-md peer outline m-1 mb-3"
-          style={{
-            outline: `2px solid ${outlineColor}`,
-          }}
-          onChange={(event) => {
-            dispatch({ type: "categoryName", payload: event.target.value });
-          }}
-        />
-      </div>
-      {/* </label> */}
+      {!showColors ? (
+        <div>
+          <div className="pr-2">
+            <span>Nom de la liste</span>
 
-      <div className="flex gap-2 text-xl font-bold justify-between mx-1">
-        <FlatButton
-          state={state}
-          category={type === "edit" ? category : null}
-          dispatch={dispatch}
-          text="Annuler"
-          onClick={onCancel}
-          color="red"
-          Icon={Backspace}
-        />
+            <CustomInput
+              placeholder="Nom de la liste"
+              autoFocus={true}
+              state={state}
+              dispatch={dispatch}
+              category={category}
+              defaultValue={type === "edit" ? category?.name : state.name}
+              type={type}
+              className="p-2 w-full rounded-md peer outline m-1 mb-3"
+              style={{
+                outline: `2px solid ${outlineColor}`,
+              }}
+              onChange={(event) => {
+                dispatch({ type: "categoryName", payload: event.target.value });
+              }}
+            />
+          </div>
 
-        <ColoredButton
-          backgroundColor={bgColor()}
-          text={type === "edit" ? "Valider" : "créer une liste"}
-          onClick={onSubmit}
-          as={Link}
-          to={`/${slug}`}
-          Icon={Save}
-        />
-      </div>
+          <div className="flex gap-2 text-xl font-bold justify-between mx-1">
+            <FlatButton
+              state={state}
+              category={type === "edit" ? category : null}
+              dispatch={dispatch}
+              text="Annuler"
+              onClick={onCancel}
+              color="red"
+              Icon={Backspace}
+            />
+
+            <ColoredButton
+              backgroundColor={bgColor()}
+              text={type === "edit" ? "Valider" : "créer une liste"}
+              onClick={show}
+              as={Link}
+              to={`/${slug}`}
+              Icon={Save}
+            />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="block mt-2 mb-3">
+            <ColorTable state={state} dispatch={dispatch} />
+          </div>
+
+          <div className="flex gap-2 text-xl font-bold justify-between mx-1">
+            <FlatButton
+              Icon={Backspace}
+              state={state}
+              category={type === "edit" ? category : null}
+              dispatch={dispatch}
+              text="Annuler"
+              onClick={onCancel}
+              color="red"
+            />
+            <ColoredButton
+              Icon={Save}
+              backgroundColor={state?.color?.primary || "#62C188"}
+              text="Valider"
+              onClick={onSubmit}
+            />
+          </div>
+        </div>
+      )}
     </form>
   );
 };

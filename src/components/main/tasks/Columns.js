@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { Add } from "@mui/icons-material";
 
 import Accordion from "./accordion/Accordion";
 import AddTask from "./AddTask";
-import AddColumn from "./AddColumn";
+import AddEditColumn from "../../shared/AddEditColumn";
 import ColHeader from "./ColHeader";
+import { uid } from "uid";
 
 const Column = ({
   state,
@@ -18,6 +20,7 @@ const Column = ({
   getStyles,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [columnName, setColumnName] = useState("");
 
   return (
     <div
@@ -108,7 +111,32 @@ const Column = ({
           </div>
         );
       })}
-      <AddColumn dispatch={dispatch} category={category} />
+      <div className="fixed bottom-[5.8%] right-2">
+        <AddEditColumn
+          dispatch={dispatch}
+          category={category}
+          Icon={Add}
+          shadow="shadow-xl"
+          color={"orange"}
+          setColumnName={setColumnName}
+          columnName={columnName}
+          placeholder="Add new column"
+          onClick={() => {
+            dispatch({
+              type: "addNewColumn",
+              payload: {
+                id: uid(),
+                categoryId: category.id,
+                title: columnName,
+                color: "lightgreen",
+                taskTitle: "",
+                showMenu: false,
+                todos: [],
+              },
+            });
+          }}
+        />
+      </div>
     </div>
   );
 };

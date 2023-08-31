@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Save, Backspace } from "@mui/icons-material";
 
 import ColorTable from "./ColorTabel";
-import FlatButton from "../../../custom/buttons/FlatButton";
-import ColoredButton from "../../../custom/buttons/ColoredButton";
+import FlatButton from "../../../shared/buttons/FlatButton";
+import ColoredButton from "../../../shared/buttons/ColoredButton";
 
 const Form = ({ state, category, dispatch, setShowModal, type, color }) => {
   const onCancel = () => {
@@ -22,9 +22,7 @@ const Form = ({ state, category, dispatch, setShowModal, type, color }) => {
     dispatch({ type: "updateCategory", payload: updatePayload });
     setShowModal(false);
   };
-  useEffect(() => {
-    // console.log("category", category);
-  }, [category]);
+
   return (
     <form>
       <div className="block mt-2 mb-3">

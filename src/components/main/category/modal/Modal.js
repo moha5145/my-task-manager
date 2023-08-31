@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Form from "./Form";
-import FlatButton from "../../../custom/buttons/FlatButton";
+import FlatButton from "../../../shared/buttons/FlatButton";
 
 export default function Modal({ state, dispatch, type, category, Icon }) {
   const [showModal, setShowModal] = useState(false);
