@@ -29,7 +29,7 @@ const AddColumn = ({
           placeholder={placeholder}
           className={`rounded-md p-2 sm:w-80 ${shadow}`}
           onChange={(e) => setColumnName(e.target.value)}
-          defaultValue={column?.title || columnName}
+          defaultValue={column?.title || ""}
           onKeyUp={(e) => {
             e.preventDefault();
             if (e.key === "Enter") {

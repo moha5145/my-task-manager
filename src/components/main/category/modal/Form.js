@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import slugify from "react-slugify";
 import { uid } from "uid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Save, Backspace } from "@mui/icons-material";
 // import BackspaceIcon from "@mui/icons-material/Backspace";
 
@@ -12,6 +12,8 @@ import ColorTable from "../../tasks/modal/ColorTabel";
 
 const Form = ({ state, category, dispatch, setShowModal, type }) => {
   const [showColors, setShowColors] = useState(false);
+  const navigate = useNavigate();
+  const slug = slugify(state.name || category?.name);
 
   const onCancel = () => {
     setShowModal(false);
@@ -23,7 +25,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
     const updatePayload = {
       id: category?.id || categoryId,
       name: state.name || category?.name,
-      slug: slugify(category?.name),
+      slug: slug,
       type: type,
       color: state.color || category?.color,
       columns: category?.columns || [],
@@ -64,7 +66,8 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
         },
       },
     });
-    setShowModal(false);
+
+    navigate(`/${slug}`);
   };
 
   const show = (e) => {
@@ -79,7 +82,6 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
   };
 
   const outlineColor = getOutlineColor();
-  const slug = slugify(state?.name);
   const bgColor = () => {
     const prColor = category?.color?.primary;
     if (!prColor || prColor === "#808080") return "#62C188";
