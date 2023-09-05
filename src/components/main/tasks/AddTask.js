@@ -32,7 +32,7 @@ const AddTask = ({
         }}
         value={column.taskTitle}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" && column.taskTitle) {
             e.preventDefault();
             dispatch({
               type: "addTodo",
@@ -56,17 +56,19 @@ const AddTask = ({
           p-2 overflow-y-hidden resize-non focus:outline-indigo-[${category?.color?.primary}] border-solid rounded-md decoration-2`}
       />
 
-      <IconButton
-        Icon={Add}
-        color={category?.color?.primary}
-        className="p-0"
-        onClick={() =>
-          dispatch({
-            type: "addTodo",
-            payload: payload,
-          })
-        }
-      />
+      {column.taskTitle ? (
+        <IconButton
+          Icon={Add}
+          color={category?.color?.primary}
+          className="p-0"
+          onClick={() =>
+            dispatch({
+              type: "addTodo",
+              payload: payload,
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

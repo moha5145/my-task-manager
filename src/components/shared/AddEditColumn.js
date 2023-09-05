@@ -27,11 +27,12 @@ const AddColumn = ({
           placeholder={placeholder}
           className={`rounded-md p-2 sm:w-80 ${shadow}`}
           onChange={(e) => setColumnName(e.target.value)}
-          defaultValue={column?.title || ""}
+          defaultValue={column?.title || columnName}
           onKeyUp={(e) => {
             e.preventDefault();
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && columnName.length > 2) {
               onClick();
+              setColumnName("");
               setShowInput(false);
             }
           }}
@@ -54,6 +55,7 @@ const AddColumn = ({
           onClick={(e) => {
             e.preventDefault();
             onClick();
+            setColumnName("");
             setShowInput(false);
           }}
         />
