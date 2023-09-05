@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 const defaultData = [
   { title: "group 1", items: ["1", "2", "3"] },

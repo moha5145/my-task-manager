@@ -6,7 +6,6 @@ import IconButton from "../../shared/buttons/IconButton";
 const AddTask = ({
   column,
   category,
-  state,
   dispatch,
   focus,
   autoFocus,

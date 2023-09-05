@@ -22,7 +22,6 @@ const Task = ({ state, category, dispatch }) => {
   };
 
   const handleDragEnter = (event, targetItem, columns) => {
-    // console.log("columns columns", columns);
     const currentItem = dragItem.current;
     const newList = [...columns];
 
@@ -54,12 +53,7 @@ const Task = ({ state, category, dispatch }) => {
   };
   return (
     <div className=" flex flex-col flex-grow justify-between ">
-      <TaskHeader
-        state={state}
-        category={category}
-        // currCategory={category}
-        dispatch={dispatch}
-      />
+      <TaskHeader state={state} category={category} dispatch={dispatch} />
 
       <div
         className="flex w-full justify-center items-start flex-grow "

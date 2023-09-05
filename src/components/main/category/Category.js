@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
 import ColoredButton from "../../shared/buttons/ColoredButton";
 
-const Category = ({ category, state, dispatch, showModal, setShowModal }) => {
+const Category = ({ category, state, dispatch }) => {
   const onDelete = () => {
     dispatch({ type: "deleteCategory", payload: category.slug });
   };

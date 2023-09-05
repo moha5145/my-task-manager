@@ -4,8 +4,6 @@ import { Save, Clear } from "@mui/icons-material";
 import ColoredButton from "./buttons/ColoredButton";
 
 const AddColumn = ({
-  dispatch,
-  category,
   Icon,
   fontSize = "large",
   text = "",

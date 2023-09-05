@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Category from "../components/main/category/Category";
 import CreateCategory from "../components/main/category/CreateCategory";
-import Test from "./Test";
 
 const Home = ({ state, categorys, dispatch, showModal, setShowModal }) => {
   return (
@@ -28,7 +27,6 @@ const Home = ({ state, categorys, dispatch, showModal, setShowModal }) => {
           );
         })}
       </div>
-      {/* <Test /> */}
     </div>
   );
 };

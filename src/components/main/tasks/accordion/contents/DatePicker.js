@@ -3,15 +3,12 @@ import React from "react";
 const DatePicker = ({ state, dispatch, todo, category, focus, setFocus }) => {
   return (
     <>
-      {/* <label for="start">Start date:</label> */}
-
       <input
         type="date"
         id="start"
         name="trip-start"
         onChange={(e) => {
           e.preventDefault();
-          // console.log("e.target.value", e.target.value);
           dispatch({
             type: "updateTodos",
             payload: {

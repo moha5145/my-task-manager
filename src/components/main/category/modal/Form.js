@@ -1,9 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import slugify from "react-slugify";
 import { uid } from "uid";
-import { Link, useNavigate } from "react-router-dom";
 import { Save, Backspace } from "@mui/icons-material";
-// import BackspaceIcon from "@mui/icons-material/Backspace";
 
 import FlatButton from "../../../shared/buttons/FlatButton";
 import ColoredButton from "../../../shared/buttons/ColoredButton";

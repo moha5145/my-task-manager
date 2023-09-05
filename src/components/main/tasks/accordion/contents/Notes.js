@@ -5,7 +5,6 @@ const Notes = ({ todo, dispatch, focus, setFocus, category }) => {
   const textAreaRef = useRef([]);
   useEffect(() => {
     resizeTextArea(textAreaRef);
-    // console.log("rendu");
   }, [todo]);
 
   const handleChange = (e) => {
@@ -18,12 +17,10 @@ const Notes = ({ todo, dispatch, focus, setFocus, category }) => {
     });
   };
   return (
-    // <div className="flex-1">
     <textarea
       ref={(element) => textAreaRef?.current?.push(element)}
       placeholder="Notes"
       autoFocus
-      // cols="auto"
       rows="8"
       name="detail"
       onChange={handleChange}
@@ -41,7 +38,6 @@ const Notes = ({ todo, dispatch, focus, setFocus, category }) => {
         focus ? { outlineColor: category?.color?.primary } : { border: "none" }
       }
     />
-    // </div>
   );
 };
 export default Notes;

@@ -1,10 +1,6 @@
 import React from "react";
 
 const CustomInput = ({
-  dispatch,
-  type,
-  category,
-  state,
   onChange,
   defaultValue = "",
   placeholder,

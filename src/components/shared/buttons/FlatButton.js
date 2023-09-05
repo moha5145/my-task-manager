@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
 const FlatButton = ({
-  state,
-  category,
-  dispatch,
   text = null,
   onClick,
   color,

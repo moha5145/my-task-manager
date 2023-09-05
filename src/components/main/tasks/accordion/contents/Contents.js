@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Delete } from "@mui/icons-material";
 
 import ColoredButton from "../../../../shared/buttons/ColoredButton";
@@ -10,10 +10,8 @@ import Status from "./Status";
 const AccordionContent = ({
   state,
   todo,
-  column,
   category,
   dispatch,
-  index,
   focus,
   setFocus,
 }) => {

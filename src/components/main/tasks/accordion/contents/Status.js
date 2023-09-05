@@ -1,6 +1,6 @@
 import React from "react";
 
-const Status = ({ state, dispatch, todo, category, focus, setFocus }) => {
+const Status = ({ dispatch, todo, category, focus, setFocus }) => {
   return (
     <div className="bg-red flex-1 mt-1">
       <label
@@ -46,8 +46,6 @@ const Status = ({ state, dispatch, todo, category, focus, setFocus }) => {
             {column.title}
           </option>
         ))}
-        {/* <option value="inProgress">In Progress</option>
-        <option value="completed">Completed</option> */}
       </select>
     </div>
   );

@@ -2,7 +2,6 @@ import React from "react";
 import DatePicker from "./DatePicker";
 
 const DueDate = ({ state, todo, dispatch, category, focus, setFocus }) => {
-  // console.log("date");
   return (
     <div className="w-full">
       <p className="text-gray-400">Date d'écheance</p>

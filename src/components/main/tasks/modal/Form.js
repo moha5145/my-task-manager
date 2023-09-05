@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Save, Backspace } from "@mui/icons-material";
 
 import ColorTable from "./ColorTabel";
