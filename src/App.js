@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Header from "./components/header";
 import Home from "./pages/Home";
-import Footer from "./components/footer";
 import Tasks from "./pages/Tasks";
 
 import { init, reducer, nestCategories } from "./components/Reducer";
@@ -23,7 +22,6 @@ function App() {
       nestCategories(state.categorys, state.newTodos, state.columns)
     );
   }, [state.categorys, state.newTodos, state.columns]);
-  // console.log("categorys from App", categorys);
 
   return (
     <Router>
@@ -42,10 +40,7 @@ function App() {
               />
             }
           />
-          {/* <Route
-          path="/create"
-          element={<Tasks state={state} dispatch={dispatch} />}
-        /> */}
+
           {categorys?.map((category, index) => {
             return (
               <Route
@@ -62,7 +57,6 @@ function App() {
             );
           })}
         </Routes>
-        <Footer />
       </div>
     </Router>
   );

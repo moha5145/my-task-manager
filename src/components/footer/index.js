@@ -1,8 +1,12 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = ({ category = null }) => {
+  const bgColor = category?.color?.primary || "#62C188";
   return (
-    <div className="fixed bottom-0 bg-[#62C188] w-full text-white text-2xl px-5">
+    <div
+      className={`fixed bottom-0 w-full text-white text-2xl px-5`}
+      style={{ backgroundColor: bgColor }}
+    >
       <p>Footer</p>
     </div>
   );

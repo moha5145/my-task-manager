@@ -2,6 +2,7 @@ import React from "react";
 
 import Category from "../components/main/category/Category";
 import CreateCategory from "../components/main/category/CreateCategory";
+import Footer from "../components/footer";
 
 const Home = ({ state, categorys, dispatch, showModal, setShowModal }) => {
   return (
@@ -26,6 +27,7 @@ const Home = ({ state, categorys, dispatch, showModal, setShowModal }) => {
             </div>
           );
         })}
+        <Footer />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 
 import Task from "../components/main/tasks/Task";
+import Footer from "../components/footer";
 
 const Tasks = ({ state, category, dispatch }) => {
   return (
@@ -11,6 +12,7 @@ const Tasks = ({ state, category, dispatch }) => {
         dispatch={dispatch}
         name="taskInput"
       />
+      <Footer category={category} />
     </div>
   );
 };
