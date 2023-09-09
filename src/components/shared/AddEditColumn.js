@@ -14,8 +14,10 @@ const AddColumn = ({
   columnName,
   column = null,
   placeholder,
+  onKeyUp,
+  showInput,
+  setShowInput,
 }) => {
-  const [showInput, setShowInput] = useState(false);
   const [focus, setFocus] = useState(false);
 
   return (
@@ -28,14 +30,7 @@ const AddColumn = ({
           className={`rounded-md p-2 sm:w-80 ${shadow}`}
           onChange={(e) => setColumnName(e.target.value)}
           defaultValue={column?.title || columnName}
-          onKeyUp={(e) => {
-            e.preventDefault();
-            if (e.key === "Enter" && columnName.length > 2) {
-              onClick();
-              setColumnName("");
-              setShowInput(false);
-            }
-          }}
+          onKeyUp={onKeyUp}
           onFocus={() => {
             setFocus(true);
           }}

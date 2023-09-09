@@ -1,6 +1,8 @@
 import "./App.css";
 import { useEffect, useReducer, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/header";
 import Home from "./pages/Home";
@@ -27,6 +29,7 @@ function App() {
     <Router>
       <div className="flex flex-col h-screen">
         <Header />
+        <ToastContainer />
         <Routes>
           <Route
             path="/"

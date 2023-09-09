@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Add } from "@mui/icons-material";
 
+import { notify } from "../../Reducer";
+
 import Accordion from "./accordion/Accordion";
 import AddTask from "./AddTask";
 import AddEditColumn from "../../shared/AddEditColumn";
@@ -21,6 +23,27 @@ const Column = ({
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [columnName, setColumnName] = useState("");
+  const [showInput, setShowInput] = useState(false);
+
+  const onAddColumn = () => {
+    dispatch({
+      type: "addNewColumn",
+      payload: {
+        id: uid(),
+        categoryId: category.id,
+        title: columnName,
+        color: "lightgreen",
+        taskTitle: "",
+        showMenu: false,
+        todos: [],
+      },
+    });
+    notify(
+      `Une nouvelle colonne (${columnName.toUpperCase()}) est ajouté  avec succès !`,
+      "success"
+    );
+    setColumnName("");
+  };
 
   return (
     <div
@@ -119,21 +142,23 @@ const Column = ({
           shadow="shadow-xl"
           color={"orange"}
           setColumnName={setColumnName}
+          showInput={showInput}
+          setShowInput={setShowInput}
           columnName={columnName}
           placeholder="Add new column"
+          onKeyUp={(e) => {
+            e.preventDefault();
+            if (e.key === "Enter") {
+              if (e.target.value.length >= 3) {
+                onAddColumn(e);
+                setShowInput(false);
+              } else {
+                notify("Minimum 3 characters !", "error");
+              }
+            }
+          }}
           onClick={() => {
-            dispatch({
-              type: "addNewColumn",
-              payload: {
-                id: uid(),
-                categoryId: category.id,
-                title: columnName,
-                color: "lightgreen",
-                taskTitle: "",
-                showMenu: false,
-                todos: [],
-              },
-            });
+            onAddColumn();
           }}
         />
       </div>

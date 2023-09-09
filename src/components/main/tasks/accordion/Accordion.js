@@ -1,5 +1,5 @@
 import React from "react";
-import AccordionHeader from "./header/Header";
+import AccordionHeader from "./header/AccordionHeader";
 import AccordionContent from "./contents/Contents";
 
 const Accordion = ({
@@ -10,7 +10,6 @@ const Accordion = ({
   dispatch,
   focus,
   setFocus,
-  column,
 }) => {
   return (
     <div className=" mt-1 ">

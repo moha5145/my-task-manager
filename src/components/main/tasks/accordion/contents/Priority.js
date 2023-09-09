@@ -23,6 +23,7 @@ const Priority = ({ todo, dispatch, category, focus, setFocus }) => {
             },
           });
         }}
+        defaultValue={todo.priority}
         onFocus={() => {
           setFocus(true);
         }}
@@ -39,7 +40,7 @@ const Priority = ({ todo, dispatch, category, focus, setFocus }) => {
             : { outline: "none", border: "none", ring: "none" }
         }
       >
-        <option defaultValue>Aucune</option>
+        <option value>Aucune</option>
         <option value="low">Basse</option>
         <option value="medium">Moyenne</option>
         <option value="high">Haute</option>

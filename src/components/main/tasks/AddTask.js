@@ -1,5 +1,6 @@
 import React from "react";
 import { Add } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 import IconButton from "../../shared/buttons/IconButton";
 
@@ -19,6 +20,7 @@ const AddTask = ({
     status,
     columnIndex,
   };
+
   return (
     <div className="flex justify-between items-center gap-2 my-1 p-1  mb-2 max-h-[50px] bg-white rounded-md ">
       <input
@@ -32,12 +34,18 @@ const AddTask = ({
         }}
         value={column.taskTitle}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && column.taskTitle) {
-            e.preventDefault();
-            dispatch({
-              type: "addTodo",
-              payload: payload,
-            });
+          if (e.key === "Enter") {
+            if (column.taskTitle) {
+              e.preventDefault();
+              dispatch({
+                type: "addTodo",
+                payload: payload,
+              });
+            } else {
+              toast.error("Veuillez entrer un titre !", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+            }
           }
         }}
         onFocus={() => {
@@ -61,12 +69,12 @@ const AddTask = ({
           Icon={Add}
           color={category?.color?.primary}
           className="p-0"
-          onClick={() =>
+          onClick={() => {
             dispatch({
               type: "addTodo",
               payload: payload,
-            })
-          }
+            });
+          }}
         />
       ) : null}
     </div>

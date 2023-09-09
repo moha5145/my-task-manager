@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { uid } from "uid";
 export const init = {
   id: 0,
@@ -166,11 +167,11 @@ const onUpdateTodo = (state, action) => {
   const { id, details, title, priority, status, dueDate } = action.payload;
 
   const newTodos = state.newTodos.map((todo) => {
-    return id === todo.id
+        return id === todo.id
       ? {
           ...todo,
-          details: details || todo.details,
-          title: title || todo.title,
+          details: details,
+          title: title,
           priority: priority || todo.priority,
           status: status || todo.status,
           dueDate: dueDate || todo.dueDate,
@@ -270,6 +271,34 @@ const toggleExpanded = (state, action) => {
   return state.newTodos.map((todo) =>
     todo.id === action.payload.id ? { ...todo, expanded: !todo.expanded } : todo
   );
+};
+
+export const notify = (text, type) => {
+  switch (type) {
+    case "success":
+      return toast.success(text, {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    case "error":
+      return toast.error(text, {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    case "info":
+      return toast.info(text, {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    case "warning":
+      return toast.warn(text, {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+    case "custom":
+      return toast("Custom Style Notification with css class!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        className: "foo-bar",
+      });
+    default:
+      return toast("Default Notification !");
+  }
 };
 
 export const reducer = (state, action) => {

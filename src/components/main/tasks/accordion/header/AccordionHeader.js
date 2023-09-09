@@ -4,16 +4,7 @@ import { ExpandMore, ExpandLess, DragIndicator } from "@mui/icons-material";
 import IconButton from "../../../../shared/buttons/IconButton";
 import CustomInput from "../../../../shared/inputs/CustomInput";
 
-const AccordionHeader = ({
-  state,
-  todo,
-  dispatch,
-  category,
-  index,
-  textAreaRef,
-  focus,
-  setFocus,
-}) => {
+const AccordionHeader = ({ todo, dispatch, category, focus, setFocus }) => {
   const dueDate = () => {
     const currDate = new Date();
     const today = currDate.toISOString().split("T")[0];

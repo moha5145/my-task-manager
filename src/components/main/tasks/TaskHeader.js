@@ -6,7 +6,7 @@ import FlatButton from "../../shared/buttons/FlatButton";
 import ColoredButton from "../../shared/buttons/ColoredButton";
 import Modal from "./modal/Modal";
 
-import { activeSaveButton } from "../../Reducer";
+import { activeSaveButton, notify } from "../../Reducer";
 
 const TasksHeader = ({ state, category, dispatch, type }) => {
   const navigate = useNavigate();
@@ -14,6 +14,16 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
 
   const saveTodos = (event) => {
     event.preventDefault();
+
+    const hasEmptyTitle = state.newTodos.some(
+      (todo) => todo.categoryId === category.id && todo.title.length < 1
+    );
+
+    if (hasEmptyTitle) {
+      notify("Veuillez renseigner un titre pour chaques tache", "error");
+      return;
+    }
+
     dispatch({ type: "saveTodos", payload: category });
   };
 
@@ -27,7 +37,7 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           color={btnColor}
           p={1}
           onClick={(e) => {
-            !isSaveButtonActive && saveTodos(e);
+            // !isSaveButtonActive && saveTodos(e);
             navigate(-1);
           }}
         />

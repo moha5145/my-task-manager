@@ -1,13 +1,42 @@
 import React, { useState } from "react";
 import { MoreVert, ModeEdit, Delete } from "@mui/icons-material";
 
+import { notify } from "../../Reducer";
+
 import IconButton from "../../shared/buttons/IconButton";
 import AddEditColumn from "../../shared/AddEditColumn";
 import FlatButton from "../../shared/buttons/FlatButton";
 
 const ColHeader = ({ column, category, dispatch, columnIndex }) => {
   const [columnName, setColumnName] = useState("");
+  const [showInput, setShowInput] = useState(false);
 
+  const onUpdateColumn = (e = null) => {
+    const currName = column?.title;
+    dispatch({
+      type: "updateStatus",
+      payload: { todos: column.todos, title: columnName },
+    });
+    dispatch({
+      type: "updateColumnName",
+      payload: {
+        id: column.id,
+        title: columnName || column.title,
+      },
+    });
+
+    dispatch({
+      type: "showMenu",
+      payload: { showMenu: !column.showMenu, columnIndex, column },
+    });
+
+    if (columnName !== column?.title) {
+      notify(
+        `${currName.toUpperCase()} est remplacé par ${columnName.toUpperCase()} avec succès !`,
+        "success"
+      );
+    } else notify(`La colonne ${columnName} n'est pas modifié !`, "info");
+  };
   return (
     <div className="w-full relative inline-block text-left">
       <div
@@ -46,24 +75,21 @@ const ColHeader = ({ column, category, dispatch, columnIndex }) => {
               color={category?.color?.primary}
               setColumnName={setColumnName}
               columnName={columnName}
+              showInput={showInput}
+              setShowInput={setShowInput}
               placeholder="Edit column title"
+              onKeyUp={(e) => {
+                e.preventDefault();
+                if (e.key === "Enter") {
+                  if (e.target.value.length >= 3) {
+                    onUpdateColumn(e);
+                  } else {
+                    notify("Minimum 3 characters !", "error");
+                  }
+                }
+              }}
               onClick={() => {
-                dispatch({
-                  type: "updateStatus",
-                  payload: { todos: column.todos, title: columnName },
-                });
-                dispatch({
-                  type: "updateColumnName",
-                  payload: {
-                    id: column.id,
-                    title: columnName || column.title,
-                  },
-                });
-
-                dispatch({
-                  type: "showMenu",
-                  payload: { showMenu: !column.showMenu, columnIndex, column },
-                });
+                onUpdateColumn();
               }}
             />
 
