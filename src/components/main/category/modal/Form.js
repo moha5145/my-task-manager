@@ -4,13 +4,15 @@ import slugify from "react-slugify";
 import { uid } from "uid";
 import { Save, Backspace } from "@mui/icons-material";
 
+import { notify } from "../../../Reducer";
 import FlatButton from "../../../shared/buttons/FlatButton";
 import ColoredButton from "../../../shared/buttons/ColoredButton";
 import CustomInput from "../../../shared/inputs/CustomInput";
 import ColorTable from "../../tasks/modal/ColorTabel";
 
-const Form = ({ state, category, dispatch, setShowModal, type }) => {
+const Form = ({ state, category, dispatch, setShowModal, type, name }) => {
   const [showColors, setShowColors] = useState(false);
+  const [newName, setNewName] = useState(name);
   const navigate = useNavigate();
   const slug = slugify(state.name || category?.name);
 
@@ -23,12 +25,11 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
     const categoryId = uid();
     const updatePayload = {
       id: category?.id || categoryId,
-      name: state.name || category?.name,
+      name: name,
       slug: slug,
       type: type,
       color: state.color || category?.color,
       columns: category?.columns || [],
-      todos: category?.todos || [],
     };
 
     dispatch({ type: "updateCategory", payload: updatePayload });
@@ -69,9 +70,13 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
     navigate(`/${slug}`);
   };
 
-  const show = (e) => {
-    e.preventDefault();
-    setShowColors(true);
+  const show = (event) => {
+    event.preventDefault();
+    if (newName) {
+      setShowColors(true);
+    } else {
+      notify("Veuillez renseigner le nom de la liste", "error");
+    }
   };
 
   const getOutlineColor = () => {
@@ -100,15 +105,16 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
               state={state}
               dispatch={dispatch}
               category={category}
-              defaultValue={type === "edit" ? category?.name : state.name}
               type={type}
               className="p-2 w-full rounded-md peer outline m-1 mb-3"
               style={{
                 outline: `2px solid ${outlineColor}`,
               }}
               onChange={(event) => {
+                setNewName(event.target.value);
                 dispatch({ type: "categoryName", payload: event.target.value });
               }}
+              defaultValue={newName}
             />
           </div>
 
@@ -125,7 +131,7 @@ const Form = ({ state, category, dispatch, setShowModal, type }) => {
 
             <ColoredButton
               backgroundColor={bgColor()}
-              text={type === "edit" ? "Valider" : "créer une liste"}
+              text="Valider"
               onClick={show}
               as={Link}
               to={`/${slug}`}

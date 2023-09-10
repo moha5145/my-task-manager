@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Form from "./Form";
 import FlatButton from "../../../shared/buttons/FlatButton";
 
-export default function Modal({ state, dispatch, type, category, Icon }) {
+export default function Modal({ state, dispatch, type, category, Icon, name }) {
   const [showModal, setShowModal] = useState(false);
 
   const onEdit = () => {
@@ -70,6 +70,7 @@ export default function Modal({ state, dispatch, type, category, Icon }) {
                 dispatch={dispatch}
                 type={type}
                 category={category}
+                name={name}
               />
             </div>
           </div>

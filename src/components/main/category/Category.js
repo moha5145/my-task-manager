@@ -35,6 +35,7 @@ const Category = ({ category, state, dispatch }) => {
           dispatch={dispatch}
           type="edit"
           category={category}
+          name={category.name}
         />
         <ColoredButton
           Icon={Delete}
