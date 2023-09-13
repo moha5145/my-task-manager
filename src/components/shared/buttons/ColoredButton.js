@@ -10,6 +10,7 @@ const ColoredButton = ({
   to = "",
   as = "button",
   fontSize = "medium",
+  p = 1,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,7 +32,7 @@ const ColoredButton = ({
 
   return (
     <button
-      className={`flex gap-1 flex-1 justify-center items-center text-white rounded-lg p-1 sm:p-2 text-xs sm:text-sm md:text-md border cursor-pointer`}
+      className={`flex gap-1 flex-1 justify-center items-center text-white rounded-lg p-1 sm:p-${p} text-xs sm:text-sm md:text-md border cursor-pointer`}
       disabled={disabled}
       style={buttonStyle}
       onClick={handleClick}

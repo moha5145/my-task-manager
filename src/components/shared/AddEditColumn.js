@@ -17,6 +17,7 @@ const AddColumn = ({
   onKeyUp,
   showInput,
   setShowInput,
+  p,
 }) => {
   const [focus, setFocus] = useState(false);
 
@@ -47,6 +48,7 @@ const AddColumn = ({
           text={showInput ? "" : text}
           backgroundColor={color}
           fontSize={fontSize}
+          p={p}
           onClick={(e) => {
             e.preventDefault();
             onClick();
@@ -60,6 +62,7 @@ const AddColumn = ({
           text={showInput ? "" : text}
           fontSize={fontSize}
           backgroundColor={color}
+          p={p}
           onClick={() => {
             setShowInput(!showInput);
           }}

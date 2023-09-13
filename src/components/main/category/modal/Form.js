@@ -49,7 +49,7 @@ const Form = ({ state, category, dispatch, setShowModal, type, name }) => {
         inProgress: {
           id: uid(),
           categoryId,
-          title: "inProgress",
+          title: "in-Progress",
           color: "orange",
           taskTitle: "",
           showMenu: false,

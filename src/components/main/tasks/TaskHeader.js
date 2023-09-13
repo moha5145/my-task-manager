@@ -16,7 +16,7 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
     event.preventDefault();
 
     const hasEmptyTitle = state.newTodos.some(
-      (todo) => todo.categoryId === category.id && todo.title.length < 1
+      (todo) => todo.categoryId === category.id && todo?.title.length < 1
     );
 
     if (hasEmptyTitle) {

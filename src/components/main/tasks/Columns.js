@@ -139,6 +139,7 @@ const Column = ({
           dispatch={dispatch}
           category={category}
           Icon={Add}
+          fontSize="large"
           shadow="shadow-xl"
           color={"orange"}
           setColumnName={setColumnName}
@@ -146,6 +147,7 @@ const Column = ({
           setShowInput={setShowInput}
           columnName={columnName}
           placeholder="Add new column"
+          p={6}
           onKeyUp={(e) => {
             e.preventDefault();
             if (e.key === "Enter") {
