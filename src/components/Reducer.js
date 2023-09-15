@@ -167,11 +167,11 @@ const onUpdateTodo = (state, action) => {
   const { id, details, title, priority, status, dueDate } = action.payload;
 
   const newTodos = state.newTodos.map((todo) => {
-        return id === todo.id
+    return id === todo.id
       ? {
           ...todo,
-          details: details,
-          title: title,
+          details: details || todo.details,
+          title: title || todo.title,
           priority: priority || todo.priority,
           status: status || todo.status,
           dueDate: dueDate || todo.dueDate,
@@ -253,6 +253,8 @@ const moveItemUpAndDown = (state, action) => {
       ...todo,
       status: columns.title,
     }));
+    console.log("todos", todos);
+    console.log("columns", columns);
     return {
       ...columns,
       todos,
