@@ -186,7 +186,7 @@ export const activeSaveButton = (state, category) => {
 };
 
 const moveItemUpAndDown = (state, action) => {
-  const { newList, task, targetColumns } = action.payload;
+  const { newList } = action.payload;
 
   const updatedTodos = newList.flatMap((columns) => {
     const todos = columns.todos.map((todo) => ({
@@ -329,7 +329,7 @@ export const reducer = (state, action) => {
         columns: newColumns,
       };
     case "deleteColumn":
-      const { data, column } = action.payload;
+      const { data } = action.payload;
       return {
         ...state,
         columns: data.allColumns,
