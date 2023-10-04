@@ -10,6 +10,7 @@ const Accordion = ({
   dispatch,
   focus,
   setFocus,
+  apiUrl
 }) => {
   return (
     <div className=" mt-1 ">
@@ -21,6 +22,7 @@ const Accordion = ({
         state={state}
         focus={focus}
         setFocus={setFocus}
+        apiUrl={apiUrl}
       />
 
       <div className={` ${todo.expanded ? "flex" : "hidden"} px-1`}>
@@ -32,6 +34,7 @@ const Accordion = ({
           index={index}
           focus={focus}
           setFocus={setFocus}
+          apiUrl={apiUrl}
         />
       </div>
     </div>

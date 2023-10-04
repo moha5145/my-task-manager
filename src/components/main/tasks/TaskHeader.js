@@ -1,18 +1,19 @@
 import React from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save, ArrowBack } from "@mui/icons-material";
+
+import { activeSaveButton, filterTodosByCategory, notify } from "../../Reducer";
 
 import FlatButton from "../../shared/buttons/FlatButton";
 import ColoredButton from "../../shared/buttons/ColoredButton";
 import Modal from "./modal/Modal";
 
-import { activeSaveButton, notify } from "../../Reducer";
-
-const TasksHeader = ({ state, category, dispatch, type }) => {
+const TasksHeader = ({ state, category, dispatch, apiUrl }) => {
   const navigate = useNavigate();
   const isSaveButtonActive = activeSaveButton(state, category);
 
-  const saveTodos = (event) => {
+  const saveTodos = async (event) => {
     event.preventDefault();
 
     const hasEmptyTitle = state.newTodos.some(
@@ -24,7 +25,15 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
       return;
     }
 
-    dispatch({ type: "saveTodos", payload: category });
+    const updatedTodos = filterTodosByCategory(state.todos, category._id);
+    const response = await axios.put(`${apiUrl}/todos/update/all`, {updatedTodos})
+
+    dispatch({ type: "saveTodos", payload: {data: response.data, categoryId: category._id} });
+  };
+
+  const onDeleteCategory = async () => {
+    const response = await axios.post(`${apiUrl}/category/delete`, category)
+    dispatch({ type: "deleteCategory", payload: response.data });
   };
 
   const btnColor = category?.color?.primary || "#22c55e";
@@ -37,7 +46,6 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           color={btnColor}
           p={1}
           onClick={(e) => {
-            // !isSaveButtonActive && saveTodos(e);
             navigate(-1);
           }}
         />
@@ -62,6 +70,7 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           type="edit"
           category={category}
           color={btnColor}
+          apiUrl={apiUrl}
         />
         <FlatButton
           text="Supprimer"
@@ -69,7 +78,7 @@ const TasksHeader = ({ state, category, dispatch, type }) => {
           Icon={Delete}
           p={1}
           onClick={() => {
-            dispatch({ type: "deleteCategory", payload: category.slug });
+            onDeleteCategory()
             navigate("/");
           }}
         />

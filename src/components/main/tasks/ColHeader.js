@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { MoreVert, ModeEdit, Delete } from "@mui/icons-material";
 
 import { notify } from "../../Reducer";
@@ -7,22 +8,28 @@ import IconButton from "../../shared/buttons/IconButton";
 import AddEditColumn from "../../shared/AddEditColumn";
 import FlatButton from "../../shared/buttons/FlatButton";
 
-const ColHeader = ({ column, category, dispatch, columnIndex }) => {
+const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
   const [columnName, setColumnName] = useState("");
   const [showInput, setShowInput] = useState(false);
 
-  const onUpdateColumn = (e = null) => {
+  const onUpdateColumn = async () => {
     const currName = column?.title;
+    const todosIds = column?.todos.map((todo) => todo._id)
+
+    const payload = {
+      column: { _id: column?._id, title: columnName || column.title },
+      todosIds
+    }
+
+    const response = await axios.put(`${apiUrl}/column/update`, payload)
+    dispatch({
+      type: "updateColumnName",
+      payload: { _id: column._id, title: response.data.title},
+    });
+    
     dispatch({
       type: "updateStatus",
       payload: { todos: column.todos, title: columnName },
-    });
-    dispatch({
-      type: "updateColumnName",
-      payload: {
-        id: column.id,
-        title: columnName || column.title,
-      },
     });
 
     dispatch({
@@ -37,11 +44,19 @@ const ColHeader = ({ column, category, dispatch, columnIndex }) => {
       );
     } else notify(`La colonne ${columnName} n'est pas modifié !`, "info");
   };
+
+  const onDelteColumn = async () => {
+    const response = await axios.post(`${apiUrl}/column/delete`, column);
+    dispatch({
+      type: "deleteColumn",
+      payload:  {data: response.data, column} ,
+    });
+  }
   return (
     <div className="w-full relative inline-block text-left">
       <div
         className={`flex relative max-h-[40px] items-center justify-between text-white text-lg rounded-md p-2 uppercase my-3`}
-        style={{ backgroundColor: category.color.primary }}
+        style={{ backgroundColor: category?.color?.primary }}
       >
         {column.title}
         <IconButton
@@ -98,10 +113,7 @@ const ColHeader = ({ column, category, dispatch, columnIndex }) => {
               text="Suprimer"
               color="red"
               onClick={() => {
-                dispatch({
-                  type: "deleteColumn",
-                  payload: { column },
-                });
+                onDelteColumn();
               }}
             />
           </div>

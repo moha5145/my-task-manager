@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Add } from "@mui/icons-material";
 
 import { notify } from "../../Reducer";
@@ -7,7 +8,6 @@ import Accordion from "./accordion/Accordion";
 import AddTask from "./AddTask";
 import AddEditColumn from "../../shared/AddEditColumn";
 import ColHeader from "./ColHeader";
-import { uid } from "uid";
 
 const Column = ({
   state,
@@ -20,41 +20,44 @@ const Column = ({
   handleDragEnter,
   handletDragStart,
   getStyles,
+  apiUrl
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [columnName, setColumnName] = useState("");
   const [showInput, setShowInput] = useState(false);
 
-  const onAddColumn = () => {
-    dispatch({
-      type: "addNewColumn",
-      payload: {
-        id: uid(),
-        categoryId: category.id,
-        title: columnName,
-        color: "lightgreen",
-        taskTitle: "",
-        showMenu: false,
-        todos: [],
-      },
-    });
-    notify(
-      `Une nouvelle colonne (${columnName.toUpperCase()}) est ajouté  avec succès !`,
-      "success"
-    );
-    setColumnName("");
+const onAddColumn = async (e) => {
+  const newColumn = {
+    categoryId: category._id,
+    title: columnName,
+    taskTitle: "",
+    showMenu: false,
+    todos: []
   };
+
+  const response = await axios.post(`${apiUrl}/column/create`, newColumn);
+
+  dispatch({
+    type: "addNewColumn",
+    payload: response.data,
+  });
+
+  notify(
+    `Une nouvelle colonne (${columnName.toUpperCase()}) est ajouté  avec succès !`,
+  );
+  setColumnName("");
+};
 
   return (
     <div
       className="w-full sm:flex flex-wrap justify-center
        py-2 md:pr-12"
     >
-      {category.columns.map((column, columnIndex) => {
+      {category?.columns.length > 0 && category?.columns.map((column, columnIndex) => {
         return (
           <div
             className="w-full sm:w-96 min-h-[300px] overflow-y-auto border px-2 gap-2 "
-            key={column.id}
+            key={column._id}
             onDragEnter={
               dragging && !column.todos.length
                 ? (e) =>
@@ -73,6 +76,7 @@ const Column = ({
               setShowMenu={setShowMenu}
               dispatch={dispatch}
               columnIndex={columnIndex}
+              apiUrl={apiUrl}
             />
 
             <AddTask
@@ -85,6 +89,7 @@ const Column = ({
               status={column.title}
               autoFocus={columnIndex === 0}
               columnIndex={columnIndex}
+              apiUrl={apiUrl}
             />
             {column.todos?.map((todo, todoIndex) => {
               const border = priorityStyle(todo);
@@ -92,7 +97,7 @@ const Column = ({
               return (
                 <div
                   draggable
-                  key={todo.id}
+                  key={todo._id}
                   className={
                     dragging
                       ? getStyles({ columnIndex, todoIndex })
@@ -102,7 +107,7 @@ const Column = ({
                     borderColor: border,
                   }}
                   onDragStart={(e) =>
-                    handletDragStart(e, { columnIndex, todoIndex })
+                    handletDragStart(e, { columnIndex, todoIndex }, category.columns)
                   }
                   onDragEnter={
                     dragging
@@ -126,6 +131,7 @@ const Column = ({
                       state={state}
                       focus={focus}
                       setFocus={setFocus}
+                      apiUrl={apiUrl}
                     />
                   </div>
                 </div>
@@ -152,16 +158,14 @@ const Column = ({
             e.preventDefault();
             if (e.key === "Enter") {
               if (e.target.value.length >= 3) {
-                onAddColumn(e);
+                onAddColumn();
                 setShowInput(false);
               } else {
                 notify("Minimum 3 characters !", "error");
               }
             }
           }}
-          onClick={() => {
-            onAddColumn();
-          }}
+          onClick={onAddColumn}
         />
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { toast } from "react-toastify";
-import { uid } from "uid";
+
 export const init = {
   id: 0,
   categorys: [],
+  columns: [],
   todos: [],
   newTodos: [],
   name: "",
@@ -21,8 +22,7 @@ export const init = {
   defaultColor: { primary: "#808080", secondary: "#E6E6E6" },
   taskName: "",
   taskNameUpdate: "",
-
-  columns: [],
+  isLoading: false,
 };
 
 export const nestCategories = (
@@ -32,14 +32,16 @@ export const nestCategories = (
   linkProperty = "categoryId"
 ) => {
   const nest = (items, parentId = null) => {
-    return items.map((item) => {
-      const filteredColumns = columns.filter(
-        (column) => column.categoryId === item.id
+    return items?.length > 0 && items?.map((item) => {
+      const filteredColumns = columns.length > 0 && columns?.filter(
+        (column) => column.categoryId === item._id
       );
+      
       const filteredTodos = todos.filter(
-        (todo) => todo[linkProperty] === item.id
+        (todo) => todo[linkProperty] === item._id
       );
-      const nestedColumns = filteredColumns.map((col) => {
+      
+      const nestedColumns = filteredColumns.length > 0 && filteredColumns?.map((col) => {
         const nestedTodos = filteredTodos.filter(
           (todo) => todo.status === col.title
         );
@@ -48,6 +50,7 @@ export const nestCategories = (
           todos: nestedTodos,
         };
       });
+      
       return {
         ...item,
         columns: nestedColumns,
@@ -57,41 +60,6 @@ export const nestCategories = (
 
   const nestedCategories = nest(categories);
   return nestedCategories;
-};
-
-const updateCategory = (state, action) => {
-  const { name, color, slug, id, type, columns } = action.payload;
-  const defaultColor = state.defaultColor;
-
-  if (type === "edit") {
-    const updatedCategory = state.categorys.map((category) =>
-      id === category.id
-        ? {
-            ...category,
-            name: name || category.name,
-            color: color || category.color,
-            slug: slug || category.slug,
-            columns: [],
-          }
-        : category
-    );
-    return updatedCategory;
-  }
-  const category = [
-    {
-      id,
-      name,
-      color: color || defaultColor,
-      slug: slug || id,
-      columns: columns || [],
-    },
-    ...state.categorys,
-  ];
-  return category;
-};
-
-const deleteCategory = (state, action) => {
-  return state.categorys.filter((category) => category.slug !== action.payload);
 };
 
 const taskTitle = (state, action) => {
@@ -106,6 +74,7 @@ const taskTitle = (state, action) => {
   });
   return updatedColumns;
 };
+
 const updateColumns = (state, action) => {
   const { currCategory } = action.payload;
   const newColumns = [...state.columns];
@@ -117,12 +86,13 @@ const updateColumns = (state, action) => {
   });
   return updatedColumns;
 };
+
 const changeColumnTitle = (state, action) => {
-  const { id, title } = action.payload;
+  const { _id, title } = action.payload;
   const updatedCol = state.columns.map((column) => {
     return {
       ...column,
-      title: column.id === id ? title : column.title,
+      title: column._id === _id ? title : column.title,
     };
   });
   return updatedCol;
@@ -133,26 +103,10 @@ const showColumnMenu = (state, action) => {
 
   const updatedColumns = state.columns.map((col) => ({
     ...col,
-    showMenu: col.id === column.id ? showMenu : col.showMenu,
+    showMenu: col._id === column._id ? showMenu : col.showMenu,
   }));
 
   return updatedColumns;
-};
-
-const addTodo = (state, action) => {
-  const { title, category, status } = action.payload;
-  const newTodo = {
-    id: uid(),
-    title,
-    details: "",
-    status,
-    priority: "",
-    dueDate: "",
-    isDragging: false,
-    categoryId: category.id,
-    expanded: false,
-  };
-  return [newTodo, ...state.newTodos];
 };
 
 export const resizeTextArea = (textAreaRef) => {
@@ -163,33 +117,41 @@ export const resizeTextArea = (textAreaRef) => {
   return singleRefs;
 };
 
-const onUpdateTodo = (state, action) => {
-  const { id, details, title, priority, status, dueDate } = action.payload;
-
-  const newTodos = state.newTodos.map((todo) => {
-    return id === todo.id
-      ? {
-          ...todo,
-          details: details || todo.details,
-          title: title || todo.title,
-          priority: priority || todo.priority,
-          status: status || todo.status,
-          dueDate: dueDate || todo.dueDate,
+const isTodoChanged = (state, action) => {
+  const { name, value, _id } = action.payload;
+   const result = state.todos.map((element) => {
+      if (element._id === _id) {
+        const isEditing = state.newTodos.some((item) => item._id === _id && item[name] !== value)
+        return {
+          ...element,
+          isEditing
         }
-      : todo;
+      }
+      return element
+    })
+    return result
+  } 
+
+const onUpdateTodo = (state, action) => {
+  const { name, value, _id } = action.payload;
+  const todos = state.todos.map((todo) => {
+    if (_id === todo._id) {
+      return {...todo, [name] : value || todo[name] }
+    }
+    return todo
   });
-  return newTodos;
+  return todos;
 };
 
 const updateStatusInColumn = (state, action) => {
   const { todos, title } = action.payload;
 
-  const updatedNewTodos = state.newTodos.map((todo) => {
-    const isTodoUpdated = todos.some((elem) => elem.id === todo.id);
+  const updatedTodos = state.todos.map((todo) => {
+    const isTodoUpdated = todos.some((elem) => elem._id === todo._id);
     return isTodoUpdated ? { ...todo, status: title } : todo;
   });
 
-  return updatedNewTodos;
+  return updatedTodos;
 };
 export const priorityStyle = (todo) => {
   if (todo.priority === "high") {
@@ -203,8 +165,8 @@ export const priorityStyle = (todo) => {
   }
 };
 
-const filterTodosByCategory = (todos, id) => {
-  return todos.filter((todo) => todo?.categoryId === id);
+export const filterTodosByCategory = (todos, id) => {
+  return todos?.filter((todo) => todo?.categoryId === id);
 };
 
 const todosWithoutCurrentCategory = (todos, id) => {
@@ -212,68 +174,50 @@ const todosWithoutCurrentCategory = (todos, id) => {
 };
 
 export const isEqual = (newTodos, todos) => {
-  if (newTodos.length !== todos.length) return false;
+  if (newTodos?.length !== todos?.length) return false;
 
   return newTodos.every((value, index) => value === todos[index]);
 };
 
-const saveTodos = (state, action) => {
-  const { id } = action.payload;
-  const newTodos = filterTodosByCategory(state.newTodos, id);
-  const todos = filterTodosByCategory(state.todos, id);
-  const isEqualResult = isEqual(newTodos, todos);
-  const withoutCurrCategory = todosWithoutCurrentCategory(state.todos, id);
-  const updatedTodos = isEqualResult
-    ? state.todos
-    : withoutCurrCategory.concat(newTodos);
-
-  return updatedTodos;
-};
-
 export const activeSaveButton = (state, category) => {
-  const filteredNewTodos = filterTodosByCategory(state.newTodos, category.id);
-  const filteredTodos = filterTodosByCategory(state.todos, category.id);
+  const filteredNewTodos = filterTodosByCategory(state.newTodos, category._id);
+  const filteredTodos = filterTodosByCategory(state.todos, category._id);
   return isEqual(filteredNewTodos, filteredTodos);
 };
 
-const deleteTodo = (state, action) => {
-  return state.newTodos.filter((todo) => todo.id !== action.payload.id);
-};
-
 const moveItemUpAndDown = (state, action) => {
-  const { newList } = action.payload;
+  const { newList, task, targetColumns } = action.payload;
 
-  const withoutCurrCategory = todosWithoutCurrentCategory(
-    state.todos,
-    action.payload.category.id
-  );
-
-  const changeStatus = newList.map((columns) => {
+  const updatedTodos = newList.flatMap((columns) => {
     const todos = columns.todos.map((todo) => ({
       ...todo,
-      status: columns.title,
+      status: columns.title
     }));
-    console.log("todos", todos);
-    console.log("columns", columns);
-    return {
-      ...columns,
-      todos,
-    };
-  });
-  const flatedTodos = changeStatus
-    .flatMap((curr) => curr.todos)
-    .filter(Boolean);
 
-  const updatedNewTodos = withoutCurrCategory.concat(flatedTodos);
+    return todos.filter(Boolean);
+  });
+
+  const updatedNewTodos = state.todos.filter(
+    (todo) => todo.categoryId !== action.payload.category._id
+  ).concat(updatedTodos);
 
   return updatedNewTodos;
 };
 
 const toggleExpanded = (state, action) => {
-  return state.newTodos.map((todo) =>
-    todo.id === action.payload.id ? { ...todo, expanded: !todo.expanded } : todo
+  return state.todos.map((todo) => {
+     return todo._id === action.payload._id ? 
+     { ...todo, expanded: !todo.expanded } :
+     todo
+  }
   );
 };
+
+const saveTodosInCurrentCategory = (state, action) => {
+  const otherTodos = todosWithoutCurrentCategory(state.todos, action.payload.categoryId);
+  const result = otherTodos.concat(action.payload.data)
+  return result
+}
 
 export const notify = (text, type) => {
   switch (type) {
@@ -305,8 +249,30 @@ export const notify = (text, type) => {
 
 export const reducer = (state, action) => {
   switch (action.type) {
+    case "isLoading":
+      return {
+        ...state,
+        isLoading: action.payload,
+      }
+    case "initialData":
+      const { allCategories, allColumns, allTodos } = action.payload;
+      
+      return {
+        ...state,
+        categorys: allCategories ? allCategories : state.categorys,
+        columns: allColumns ? allColumns : state.columns,
+        todos: allTodos ? allTodos : state.todos,
+        // newTodos: allTodos ? allTodos : state.newTodos,
+        name: "",
+        color: "",
+      }
+
     case "updateCategory":
-      const updatedCategory = updateCategory(state, action);
+      const {name, slug, color, _id } = action.payload;
+      const updatedCategory = state.categorys.map((category) => {
+        return category._id === _id ? { ...category, name, slug, color } : category
+      })
+
       return {
         ...state,
         categorys: updatedCategory,
@@ -314,7 +280,7 @@ export const reducer = (state, action) => {
         color: "",
       };
     case "deleteCategory":
-      const deletedCategory = deleteCategory(state, action);
+      const deletedCategory = state.categorys.filter((category) => category._id !== action.payload);
       return {
         ...state,
         categorys: deletedCategory,
@@ -334,7 +300,7 @@ export const reducer = (state, action) => {
         ...state,
         tasks: action.payload.category?.tasks,
       };
-    case "copyTodos":
+      case "copyTodos":
       return {
         ...state,
         newTodos: [...state.todos],
@@ -357,20 +323,17 @@ export const reducer = (state, action) => {
         columns: changeName,
       };
     case "updateColumns":
-      const columns = updateColumns(state, action);
+      const newColumns = updateColumns(state, action);
       return {
         ...state,
-        columns: columns,
+        columns: newColumns,
       };
     case "deleteColumn":
-      const { column } = action.payload;
-      const deleteTodosInThisCol = state.newTodos.filter(
-        (todo) => todo.status !== column.title
-      );
+      const { data, column } = action.payload;
       return {
         ...state,
-        columns: state.columns.filter((item) => item.id !== column.id),
-        newTodos: deleteTodosInThisCol,
+        columns: data.allColumns,
+        todos: data.allTodos
       };
     case "showMenu":
       const showColMenu = showColumnMenu(state, action);
@@ -385,52 +348,67 @@ export const reducer = (state, action) => {
         columns: col,
       };
     case "addTodo":
-      const addedTodos = addTodo(state, action);
       const resetTaskTitle = state.columns.map((column) => ({
         ...column,
         taskTitle: "",
       }));
       return {
         ...state,
-        newTodos: addedTodos,
+        todos: [...state.todos, action.payload],
+        newTodos: [...state.newTodos, action.payload],
         columns: resetTaskTitle,
       };
+    case "isTodoChanged":
+      const todoChangedResult = isTodoChanged(state, action);
+      return {
+        ...state,
+        todos: todoChangedResult
+      }
     case "updateTodos":
       const updatedTodos = onUpdateTodo(state, action);
       return {
         ...state,
-        newTodos: updatedTodos,
+        todos: updatedTodos,
+      };
+    case "updateTodo":
+      const updatedTodo = state.todos.map((todo) => {
+        return todo._id === action.payload._id ? action.payload : todo
+      })
+      return {
+        ...state,
+        todos: updatedTodo,
       };
     case "updateStatus":
       const updatedStatus = updateStatusInColumn(state, action);
       return {
         ...state,
-        newTodos: updatedStatus,
+        todos: updatedStatus,
       };
 
     case "saveTodos":
-      const savedTodos = saveTodos(state, action);
+      const savedTodos = saveTodosInCurrentCategory(state, action);
+      
       return {
         ...state,
         todos: savedTodos,
       };
     case "deleteTodo":
-      const deletedTodo = deleteTodo(state, action);
       return {
         ...state,
-        newTodos: deletedTodo,
+        newTodos: action.payload.todos.allTodos,
+        todos: action.payload.todos.allTodos
       };
     case "moveUpAndDown":
       const updatedNewTodos = moveItemUpAndDown(state, action);
       return {
         ...state,
-        newTodos: updatedNewTodos,
+        todos: updatedNewTodos,
       };
     case "expanded":
       const toggledExpanded = toggleExpanded(state, action);
       return {
         ...state,
-        newTodos: toggledExpanded,
+        todos: toggledExpanded,
       };
     default:
       return state;

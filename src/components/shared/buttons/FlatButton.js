@@ -25,7 +25,8 @@ const FlatButton = ({
     <button
       type="button"
       disabled={disabled}
-      className={`flex flex-1 gap-1 justify-center items-center p-${p} sm:p-2 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}] cursor-pointer`}
+      className={text ? `flex flex-1 gap-1 justify-center items-center p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}] cursor-pointer` :
+      `p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}]  cursor-pointer`}
       style={buttonStyle}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
@@ -33,7 +34,7 @@ const FlatButton = ({
       to={link}
     >
       {Icon && <Icon />}
-      <span className=" hidden sm:block ">{text}</span>
+      {text && <span className=" hidden sm:block ">{text}</span>}
     </button>
   );
 };

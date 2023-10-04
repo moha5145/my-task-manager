@@ -1,8 +1,10 @@
 import React from "react";
-import { Delete } from "@mui/icons-material";
+import axios from "axios";
+import { Delete, Save } from "@mui/icons-material";
 
 import ColoredButton from "../../../../shared/buttons/ColoredButton";
-import Notes from "./Notes";
+import FlatButton from "../../../../shared/buttons/FlatButton";
+import Details from "./Details";
 import Priority from "./Priority";
 import DueDate from "./DueDate";
 import Status from "./Status";
@@ -14,8 +16,23 @@ const AccordionContent = ({
   dispatch,
   focus,
   setFocus,
+  apiUrl,
+  index
 }) => {
+  
   const expandedClass = todo.expanded ? "max-h-auto " : "max-h-0 ";
+
+  const onDeleteTodo = async () => {
+    const response = await axios.post(`${apiUrl}/todo/delete`, todo);
+    dispatch({ type: "deleteTodo", payload: {todos: response.data, todo}});
+  }
+
+  const onUpdateTodo = async (e) => {
+    e.preventDefault();
+    const response = await axios.put(`${apiUrl}/todo/update`, todo);
+    dispatch({ type: "updateTodo", payload: response.data });
+    dispatch({ type: "copyTodos" });
+  }
 
   return (
     <div
@@ -23,12 +40,14 @@ const AccordionContent = ({
     >
       <div className=" sm:flex sm:flex-row gap-2">
         <div className="flex-1">
-          <Notes
+          <Details
+            state={state}
             todo={todo}
             dispatch={dispatch}
             focus={focus}
             setFocus={setFocus}
             category={category}
+            index={index}
           />
         </div>
         <div className="flex-1 ">
@@ -54,13 +73,22 @@ const AccordionContent = ({
             focus={focus}
             setFocus={setFocus}
             category={category}
+            apiUrl={apiUrl}
           />
-          <div className="flex flex-col ml-auto w-12 justify-center items-center self-end my-2 mb-4 text-right">
+          <div className="flex ml-auto mr-3 gap-1 w-12 justify-center items-center self-end my-2 mb-4 text-right">
             <ColoredButton
-              Icon={Delete}
-              backgroundColor="#ef4444"
+              Icon={Save}
+              disabled={!todo?.isEditing}
+              backgroundColor={todo?.isEditing ? "#62c188" : "#e5e7eb"}
               color="white"
-              onClick={() => dispatch({ type: "deleteTodo", payload: todo })}
+              onClick={onUpdateTodo}
+            />
+
+            <FlatButton
+              Icon={Delete}
+              color="#ef4444"
+              p={1}
+              onClick={onDeleteTodo}
             />
           </div>
         </div>

@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
+import axios from "axios";
 
 import { priorityStyle } from "../../Reducer";
 
 import TaskHeader from "./TaskHeader";
 import Columns from "./Columns";
 
-const Task = ({ state, category, dispatch }) => {
+const Task = ({ state, category, dispatch, apiUrl }) => {
   const [dragging, setDragging] = useState(false);
-  const [focus, setFocus] = useState(false);
+  const [focus, setFocus] = useState(false);  
 
   const dragItem = useRef({});
   const dragItemNode = useRef();
@@ -21,21 +22,30 @@ const Task = ({ state, category, dispatch }) => {
     setTimeout(() => setDragging(true), 0);
   };
 
-  const handleDragEnter = (event, targetItem, columns) => {
-    const currentItem = dragItem.current;
-    const newList = [...columns];
+const handleDragEnter = async (event, targetItem, columns) => {
+  const currentItem = dragItem.current;
+  const newList = [...columns];
 
-    if (dragItemNode.current !== event.target) {
-      const sourceTasks = newList[currentItem.columnIndex].todos;
-      const targetTasks = newList[targetItem.columnIndex].todos;
-
-      const [removed] = sourceTasks.splice(currentItem.todoIndex, 1);
-      targetTasks.splice(targetItem.todoIndex, 0, removed);
-      dragItem.current = targetItem;
-
-      dispatch({ type: "moveUpAndDown", payload: { category, newList } });
-    }
-  };
+  if (dragItemNode.current !== event.target) {
+    const sourceTasks = newList[currentItem.columnIndex].todos;
+    const targetTasks = newList[targetItem.columnIndex].todos;
+    
+    const [removed] = sourceTasks.splice(currentItem.todoIndex, 1);
+    targetTasks.splice(targetItem.todoIndex, 0, removed);
+    
+    dragItem.current = targetItem;
+    
+    const isDifferentColumn = currentItem.columnIndex !== targetItem.columnIndex;
+    const targetColumns = newList[targetItem.columnIndex];
+    const todo = {...removed, status: targetColumns.title};
+  
+    dispatch({ type: "moveUpAndDown", payload: { category, newList, task: todo, targetColumns } });
+    
+    if (isDifferentColumn) {
+      await axios.put(`${apiUrl}/todo/update`, todo);
+    }  
+  }
+};
   const handleDragEnd = (e) => {
     setDragging(false);
     dragItemNode.current.removeEventListener("dragend", handleDragEnd);
@@ -53,7 +63,7 @@ const Task = ({ state, category, dispatch }) => {
   };
   return (
     <div className=" flex flex-col flex-grow justify-between ">
-      <TaskHeader state={state} category={category} dispatch={dispatch} />
+      <TaskHeader state={state} category={category} dispatch={dispatch} apiUrl={apiUrl} />
 
       <div
         className="flex w-full justify-center items-start flex-grow "
@@ -70,6 +80,7 @@ const Task = ({ state, category, dispatch }) => {
           handleDragEnter={handleDragEnter}
           handletDragStart={handletDragStart}
           getStyles={getStyles}
+          apiUrl={apiUrl}
         />
       </div>
     </div>

@@ -4,22 +4,26 @@ import { Save, Backspace } from "@mui/icons-material";
 import ColorTable from "./ColorTabel";
 import FlatButton from "../../../shared/buttons/FlatButton";
 import ColoredButton from "../../../shared/buttons/ColoredButton";
+import axios from "axios";
 
-const Form = ({ state, category, dispatch, setShowModal, type, color }) => {
+const Form = ({ state, category, dispatch, setShowModal, type, color, apiUrl }) => {
   const onCancel = () => {
     setShowModal(false);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
-    const updatePayload = {
-      id: category?.id,
+    const categoryToUpdate = {
+      _id: category?._id,
+      name: category.name,
+      slug: category.slug,
       color: state.color || category?.color,
-      type: "edit",
     };
 
-    dispatch({ type: "updateCategory", payload: updatePayload });
+    const response = await axios.put(`${apiUrl}/category/update`, categoryToUpdate)
+
+    dispatch({ type: "updateCategory", payload: response.data });
     setShowModal(false);
   };
 

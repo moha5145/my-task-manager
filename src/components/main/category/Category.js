@@ -1,16 +1,19 @@
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
 import ColoredButton from "../../shared/buttons/ColoredButton";
 
-const Category = ({ category, state, dispatch }) => {
-  const onDelete = () => {
-    dispatch({ type: "deleteCategory", payload: category.slug });
+const Category = ({ category, state, dispatch, apiUrl }) => {
+  const onDeleteCategory = async (e) => {
+    e.preventDefault();
+    const response = await axios.post(`${apiUrl}/category/delete`, category)
+    dispatch({ type: "deleteCategory", payload: response.data });
   };
 
-  const primaryColor = category.color.primary || state.defaultColor.primary;
+  const primaryColor = category?.color?.primary || state.defaultColor.primary;
 
   return (
     <div
@@ -36,12 +39,13 @@ const Category = ({ category, state, dispatch }) => {
           type="edit"
           category={category}
           name={category.name}
+          apiUrl={apiUrl}
         />
         <ColoredButton
           Icon={Delete}
           backgroundColor={primaryColor}
           text="Suprimer"
-          onClick={onDelete}
+          onClick={onDeleteCategory}
         />
       </div>
     </div>

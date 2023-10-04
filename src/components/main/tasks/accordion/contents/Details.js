@@ -2,20 +2,19 @@ import React, { useEffect, useRef } from "react";
 import { resizeTextArea } from "../../../../Reducer";
 
 const Notes = ({ todo, dispatch, focus, setFocus, category }) => {
+  
   const textAreaRef = useRef([]);
   useEffect(() => {
     resizeTextArea(textAreaRef);
   }, [todo]);
 
   const handleChange = (e) => {
-    dispatch({
-      type: "updateTodos",
-      payload: {
-        details: e.target.value,
-        id: todo.id,
-      },
-    });
+    const updatedDetails = e.target.value;
+    dispatch({type: 'isTodoChanged', payload: {name:'details', value: updatedDetails, _id: todo._id}});
+  
+    dispatch({ type: "updateTodos", payload: { name: 'details', value: updatedDetails, _id: todo._id } });
   };
+  
   return (
     <textarea
       ref={(element) => textAreaRef?.current?.push(element)}

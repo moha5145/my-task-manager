@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { Add } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
@@ -13,12 +14,26 @@ const AddTask = ({
   setFocus,
   status,
   columnIndex,
+  apiUrl
 }) => {
   const payload = {
-    category,
     title: column.taskTitle,
     status,
-    columnIndex,
+    details: "",
+    priority: "aucune",
+    dueDate: "",
+    isDragging: false,
+    isEditing: false,
+    categoryId: category._id,
+    expanded: false,
+  };
+
+  const onSubmit = async () => {
+    const response = await axios.post(`${apiUrl}/todo/create`, payload);
+    dispatch({
+      type: "addTodo",
+      payload: response.data,
+    });
   };
 
   return (
@@ -37,10 +52,7 @@ const AddTask = ({
           if (e.key === "Enter") {
             if (column.taskTitle) {
               e.preventDefault();
-              dispatch({
-                type: "addTodo",
-                payload: payload,
-              });
+              onSubmit();
             } else {
               toast.error("Veuillez entrer un titre !", {
                 position: toast.POSITION.TOP_CENTER,
@@ -70,10 +82,7 @@ const AddTask = ({
           color={category?.color?.primary}
           className="p-0"
           onClick={() => {
-            dispatch({
-              type: "addTodo",
-              payload: payload,
-            });
+            onSubmit()
           }}
         />
       ) : null}

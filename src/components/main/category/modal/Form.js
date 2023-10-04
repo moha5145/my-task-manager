@@ -1,74 +1,59 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import slugify from "react-slugify";
-import { uid } from "uid";
 import { Save, Backspace } from "@mui/icons-material";
 
 import { notify } from "../../../Reducer";
+
 import FlatButton from "../../../shared/buttons/FlatButton";
 import ColoredButton from "../../../shared/buttons/ColoredButton";
 import CustomInput from "../../../shared/inputs/CustomInput";
 import ColorTable from "../../tasks/modal/ColorTabel";
 
-const Form = ({ state, category, dispatch, setShowModal, type, name }) => {
+const Form = ({ state, category, dispatch, setShowModal, type, name, apiUrl }) => {
   const [showColors, setShowColors] = useState(false);
   const [newName, setNewName] = useState(name);
   const navigate = useNavigate();
-  const slug = slugify(state.name || category?.name);
+  const slug = slugify(newName || category?.name);
 
   const onCancel = () => {
     setShowModal(false);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
-    const categoryId = uid();
-    const updatePayload = {
-      id: category?.id || categoryId,
-      name: name,
+    dispatch({ type: 'isLoading', payload: true });
+    const newCategory = {
+      name,
+      color: state.color || state.defaultColor,
       slug: slug,
-      type: type,
-      color: state.color || category?.color,
-      columns: category?.columns || [],
-    };
+      columns: [],
+    }
+    const response = await axios.post(`${apiUrl}/category/create`, newCategory)
+  
+    dispatch({ type: "initialData", payload: response.data});
+    dispatch({ type: 'isLoading', payload: false });
 
-    dispatch({ type: "updateCategory", payload: updatePayload });
-
-    dispatch({
-      type: "addIntialColumns",
-      payload: {
-        todo: {
-          id: uid(),
-          categoryId,
-          title: "todo",
-          color: "red",
-          taskTitle: "",
-          showMenu: false,
-          todos: [],
-        },
-        inProgress: {
-          id: uid(),
-          categoryId,
-          title: "in-Progress",
-          color: "orange",
-          taskTitle: "",
-          showMenu: false,
-          todos: [],
-        },
-        completed: {
-          id: uid(),
-          categoryId,
-          title: "completed",
-          color: "lightgreen",
-          taskTitle: "",
-          showMenu: false,
-          todos: [],
-        },
-      },
-    });
-
-    navigate(`/${slug}`);
+    setTimeout(() => {
+      !state.isLoading && navigate(`/${slug}`)
+    }, 1000);
   };
+
+  const onUpdateCategory = async (e) => {
+    e.preventDefault();
+    const categoryToUpdate = {
+      _id: category._id,
+      name: newName,
+      slug: slugify(newName),
+      color: state.color,
+    }
+
+    const response = await axios.put(`${apiUrl}/category/update`, categoryToUpdate)
+    
+    dispatch({ type: "updateCategory", payload: response.data});
+    setShowModal(false);
+  }
 
   const show = (event) => {
     event.preventDefault();
@@ -159,7 +144,7 @@ const Form = ({ state, category, dispatch, setShowModal, type, name }) => {
               Icon={Save}
               backgroundColor={state?.color?.primary || "#62C188"}
               text="Valider"
-              onClick={onSubmit}
+              onClick={type === "edit" ? onUpdateCategory : onSubmit}
             />
           </div>
         </div>

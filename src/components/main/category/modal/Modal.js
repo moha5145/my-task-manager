@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Form from "./Form";
 import FlatButton from "../../../shared/buttons/FlatButton";
 
-export default function Modal({ state, dispatch, type, category, Icon, name }) {
+export default function Modal({ state, dispatch, type, category, Icon, name, apiUrl }) {
   const [showModal, setShowModal] = useState(false);
 
   const onEdit = () => {
@@ -19,7 +19,7 @@ export default function Modal({ state, dispatch, type, category, Icon, name }) {
         dispatch={dispatch}
         text="Editer"
         onClick={onEdit}
-        color={category.color.primary}
+        color={category?.color?.primary}
       />
     );
   };
@@ -71,6 +71,7 @@ export default function Modal({ state, dispatch, type, category, Icon, name }) {
                 type={type}
                 category={category}
                 name={name}
+                apiUrl={apiUrl}
               />
             </div>
           </div>
