@@ -176,13 +176,13 @@ const todosWithoutCurrentCategory = (todos, id) => {
 export const isEqual = (newTodos, todos) => {
   if (newTodos?.length !== todos?.length) return false;
 
-  return newTodos.every((value, index) => value === todos[index]);
+  return newTodos.some((value, index) => value === todos[index]);
 };
 
 export const activeSaveButton = (state, category) => {
-  const filteredNewTodos = filterTodosByCategory(state.newTodos, category._id);
   const filteredTodos = filterTodosByCategory(state.todos, category._id);
-  return isEqual(filteredNewTodos, filteredTodos);
+  const result = filteredTodos.some((todo) => todo.isEditing);
+  return result
 };
 
 const moveItemUpAndDown = (state, action) => {

@@ -16,8 +16,8 @@ const TasksHeader = ({ state, category, dispatch, apiUrl }) => {
   const saveTodos = async (event) => {
     event.preventDefault();
 
-    const hasEmptyTitle = state.newTodos.some(
-      (todo) => todo.categoryId === category.id && todo?.title.length < 1
+    const hasEmptyTitle = state.todos.some(
+      (todo) => todo.categoryId === category._id && todo?.title.length < 1
     );
 
     if (hasEmptyTitle) {
@@ -25,7 +25,9 @@ const TasksHeader = ({ state, category, dispatch, apiUrl }) => {
       return;
     }
 
-    const updatedTodos = filterTodosByCategory(state.todos, category._id);
+    const updatedTodos = filterTodosByCategory(state.todos, category._id)
+    .map((todo) => { return {...todo, isEditing: false}});
+    
     const response = await axios.put(`${apiUrl}/todos/update/all`, {updatedTodos})
 
     dispatch({ type: "saveTodos", payload: {data: response.data, categoryId: category._id} });
@@ -51,11 +53,11 @@ const TasksHeader = ({ state, category, dispatch, apiUrl }) => {
         />
 
         <ColoredButton
-          disabled={isSaveButtonActive}
+          disabled={!isSaveButtonActive}
           text="Sauvegarder"
           Icon={Save}
           p={1}
-          backgroundColor={isSaveButtonActive ? "#dddbdb" : btnColor}
+          backgroundColor={!isSaveButtonActive ? "#dddbdb" : btnColor}
           onClick={saveTodos}
         />
       </div>
