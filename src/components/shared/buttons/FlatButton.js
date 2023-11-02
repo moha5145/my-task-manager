@@ -1,3 +1,4 @@
+import { Tooltip } from "@radix-ui/themes";
 import React, { useState } from "react";
 
 const FlatButton = ({
@@ -8,6 +9,7 @@ const FlatButton = ({
   p = 2,
   disabled = false,
   link = "/",
+  tooltipContent = null
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -22,20 +24,22 @@ const FlatButton = ({
   const handleMouseLeave = () => setHover(false);
 
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      className={text ? `flex flex-1 gap-1 justify-center items-center p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}] cursor-pointer` :
-      `p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}]  cursor-pointer`}
-      style={buttonStyle}
-      onClick={onClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      to={link}
-    >
-      {Icon && <Icon />}
-      {text && <span className=" hidden sm:block ">{text}</span>}
-    </button>
+    <Tooltip content = {tooltipContent} open={hover && tooltipContent}>
+      <button
+        type="button"
+        disabled={disabled}
+        className={text ? `flex flex-1 gap-1 justify-start items-center p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}] cursor-pointer` :
+        `p-${p} sm:p-1 text-xs sm:text-sm md:text-md border hover:text-white rounded-lg bg-[${color}]  cursor-pointer`}
+        style={buttonStyle}
+        onClick={onClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        to={link}
+      >
+        {Icon && <Icon />}
+        {text && <span className=" hidden sm:block ">{text}</span>}
+      </button>          
+    </Tooltip>
   );
 };
 export default FlatButton;

@@ -12,6 +12,7 @@ import Status from "./Status";
 const AccordionContent = ({
   state,
   todo,
+  column,
   category,
   dispatch,
   focus,
@@ -68,6 +69,7 @@ const AccordionContent = ({
           />
           <Status
             todo={todo}
+            column={column}
             state={state}
             dispatch={dispatch}
             focus={focus}

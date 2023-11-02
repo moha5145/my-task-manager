@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Form from "./Form";
-import FlatButton from "../../../shared/buttons/FlatButton";
+import ColoredButton from "../../../shared/buttons/ColoredButton";
 
 export default function Modal({ state, dispatch, type, category, Icon, name, apiUrl }) {
   const [showModal, setShowModal] = useState(false);
@@ -12,14 +12,14 @@ export default function Modal({ state, dispatch, type, category, Icon, name, api
 
   const renderEditButton = () => {
     return (
-      <FlatButton
+      <ColoredButton
         Icon={Icon}
         state={state}
         category={category}
         dispatch={dispatch}
         text="Editer"
         onClick={onEdit}
-        color={category?.color?.primary}
+        backgroundColor={category?.color?.primary}
       />
     );
   };

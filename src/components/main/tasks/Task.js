@@ -37,7 +37,7 @@ const handleDragEnter = async (event, targetItem, columns) => {
     
     const isDifferentColumn = currentItem.columnIndex !== targetItem.columnIndex;
     const targetColumns = newList[targetItem.columnIndex];
-    const todo = {...removed, status: targetColumns.title};
+    const todo = {...removed, status: targetColumns.title, columnId: targetColumns._id};
   
     dispatch({ type: "moveUpAndDown", payload: { category, newList, task: todo, targetColumns } });
     

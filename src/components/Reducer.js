@@ -398,6 +398,13 @@ export const reducer = (state, action) => {
         newTodos: action.payload.todos.allTodos,
         todos: action.payload.todos.allTodos
       };
+    case "deleteTodosInColumn":
+      const deletedTodosInCurrentColumn = state.todos.filter((todo) => todo.columnId !== action.payload)
+      return {
+        ...state,
+        todos: deletedTodosInCurrentColumn,
+        newTodos: deletedTodosInCurrentColumn
+      }
     case "moveUpAndDown":
       const updatedNewTodos = moveItemUpAndDown(state, action);
       return {

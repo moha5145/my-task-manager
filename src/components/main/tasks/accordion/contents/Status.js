@@ -1,11 +1,11 @@
 import axios from "axios";
 import React from "react";
 
-const Status = ({ dispatch, todo, category, focus, setFocus, apiUrl }) => {
+const Status = ({ dispatch, todo, category, focus, setFocus, apiUrl, column }) => {
   
   const onChangeStatus = async (e) => {
     const newStatus = e.target.value;
-    const updatedTodo = { ...todo, status: newStatus };
+    const updatedTodo = { ...todo, status: newStatus, columnId: column._id };
     const response = await axios.put(`${apiUrl}/todo/update`, updatedTodo);
     dispatch({ type: "updateTodos", payload: { name: "status", value: response.data.status, _id: todo._id} });
   }

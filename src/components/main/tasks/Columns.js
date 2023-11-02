@@ -125,6 +125,7 @@ const onAddColumn = async (e) => {
                   <div className="">
                     <Accordion
                       todo={todo}
+                      column={column}
                       category={category}
                       index={todoIndex}
                       dispatch={dispatch}
@@ -154,6 +155,7 @@ const onAddColumn = async (e) => {
           columnName={columnName}
           placeholder="Add new column"
           p={6}
+          h={14}
           onKeyUp={(e) => {
             e.preventDefault();
             if (e.key === "Enter") {

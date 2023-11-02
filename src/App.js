@@ -1,4 +1,5 @@
 import "./App.css";
+import { Theme } from '@radix-ui/themes';
 import { useEffect, useReducer, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -11,8 +12,8 @@ import Header from "./components/header";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 
-// const apiUrl = "http://localhost:3000";
-const apiUrl = "https://mytaskmanager-wylmfxh4.b4a.run";
+const apiUrl = "http://localhost:3000";
+// const apiUrl = "https://mytaskmanager-wylmfxh4.b4a.run";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, init);
@@ -46,37 +47,39 @@ function App() {
   }, [state.categorys, state.columns, state.todos]);
   
   return (
-    <Router>
-      <div className="flex flex-col h-screen">
-        <Header />
-        <ToastContainer />
-        <Routes>
-            <Route
-              path="/"
-              element={
-                <Home
-                  state={state}
-                  dispatch={dispatch}
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                  categorys={categorys}
-                  isLoading={state.isLoading}
-                  setCategorys={setCategorys}
-                  apiUrl={apiUrl}
-                />
-              }
-            />
+    <Theme>
+      <Router>
+        <div className="flex flex-col h-screen">
+          <Header />
+          <ToastContainer />
+          <Routes>
+              <Route
+                path="/"
+                element={
+                  <Home
+                    state={state}
+                    dispatch={dispatch}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    categorys={categorys}
+                    isLoading={state.isLoading}
+                    setCategorys={setCategorys}
+                    apiUrl={apiUrl}
+                  />
+                }
+              />
 
-          { categorys.length > 0 && categorys?.map((category, index) => (
-            <Route
-              key={category._id}
-              path={`/${category.slug}`}
-              element={<Tasks state={state} category={category} dispatch={dispatch} setCategorys={setCategorys} apiUrl={apiUrl}/>}
-            />
-          ))}
-        </Routes>
-      </div>
-    </Router>
+            { categorys.length > 0 && categorys?.map((category, index) => (
+              <Route
+                key={category._id}
+                path={`/${category.slug}`}
+                element={<Tasks state={state} category={category} dispatch={dispatch} setCategorys={setCategorys} apiUrl={apiUrl}/>}
+              />
+            ))}
+          </Routes>
+        </div>
+      </Router>
+    </Theme>
   );
 }
 

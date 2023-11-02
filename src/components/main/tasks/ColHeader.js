@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { MoreVert, ModeEdit, Delete } from "@mui/icons-material";
+import { MoreVert, ModeEdit, Delete, Save, DeleteForever } from "@mui/icons-material";
 
 import { notify } from "../../Reducer";
 
@@ -46,10 +46,33 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
   };
 
   const onDelteColumn = async () => {
-    const response = await axios.post(`${apiUrl}/column/delete`, column);
+    const payload = {
+      columnId: column?._id,
+      title: column?.title,
+      categoryId: category?._id
+    }
+    const response = await axios.post(`${apiUrl}/column/delete`, payload);
     dispatch({
       type: "deleteColumn",
       payload:  {data: response.data, column} ,
+    });
+  }
+
+  const onDelteTasksInColumn = async () => {
+    const response = await axios.delete(`${apiUrl}/todos/delete/${column._id}`);
+    console.log('response.data', response.data)
+    dispatch({
+      type: "deleteTodosInColumn",
+      payload:  column._id,
+    });
+  }
+
+  const onSaveTasksInColumn = async () => {
+    const response = await axios.put(`${apiUrl}/todos/restore/${column._id}`);
+    console.log('response.data', response.data)
+    dispatch({
+      type: "restoreTodosInColumn",
+      payload:  column._id,
     });
   }
   return (
@@ -72,7 +95,7 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
       </div>
       {column.showMenu ? (
         <div
-          className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white 
+          className="absolute right-0 z-10 mt-0 w-full origin-top-right rounded-md bg-white 
           shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
@@ -93,6 +116,7 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
               showInput={showInput}
               setShowInput={setShowInput}
               placeholder="Edit column title"
+              tooltipContent="Modifier le titre de la colonne"
               onKeyUp={(e) => {
                 e.preventDefault();
                 if (e.key === "Enter") {
@@ -109,9 +133,30 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
             />
 
             <FlatButton
+              Icon={Save}
+              text="Sauvegarder"
+              color={category?.color?.primary}
+              tooltipContent="Sauvegarder toutes les taches de la colonne"
+              onClick={() => {
+                onSaveTasksInColumn();
+              }}
+            />
+            
+            <FlatButton
+              Icon={DeleteForever}
+              text="Suprimer"
+              color="red"
+              tooltipContent="Suprimer toutes les taches de la colonne"
+              onClick={() => {
+                onDelteTasksInColumn();
+              }}
+            />
+            
+            <FlatButton
               Icon={Delete}
               text="Suprimer"
               color="red"
+              tooltipContent="Suprimer la colonne"
               onClick={() => {
                 onDelteColumn();
               }}

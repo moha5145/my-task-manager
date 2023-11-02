@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
-import ColoredButton from "../../shared/buttons/ColoredButton";
+import FlatButton from "../../shared/buttons/FlatButton";
 
 const Category = ({ category, state, dispatch, apiUrl }) => {
   const onDeleteCategory = async (e) => {
@@ -41,9 +41,10 @@ const Category = ({ category, state, dispatch, apiUrl }) => {
           name={category.name}
           apiUrl={apiUrl}
         />
-        <ColoredButton
+
+        <FlatButton
           Icon={Delete}
-          backgroundColor={primaryColor}
+          color="#ff0000"
           text="Suprimer"
           onClick={onDeleteCategory}
         />

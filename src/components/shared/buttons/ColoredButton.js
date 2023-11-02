@@ -1,3 +1,4 @@
+import { Tooltip } from "@radix-ui/themes";
 import React, { useState } from "react";
 
 const ColoredButton = ({
@@ -11,6 +12,7 @@ const ColoredButton = ({
   as = "button",
   fontSize = "medium",
   p = 1,
+  tooltipContent = null
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,19 +33,21 @@ const ColoredButton = ({
   };
 
   return (
-    <button
-      className={`flex gap-1 flex-1 justify-center items-center text-white rounded-lg p-1 sm:p-${p} text-xs sm:text-sm md:text-md border cursor-pointer`}
-      disabled={disabled}
-      style={buttonStyle}
-      onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      as={as}
-      to={to}
-    >
-      {Icon && <Icon fontSize={fontSize} />}
-      {text && <span className="hidden sm:block ">{text}</span>}
-    </button>
+    <Tooltip content = {tooltipContent} open={isHovered && tooltipContent} >
+      <button
+        className={`flex gap-1 flex-1 justify-start items-center text-white rounded-lg p-1 sm:p-${p} text-xs sm:text-sm md:text-md border cursor-pointer`}
+        disabled={disabled}
+        style={buttonStyle}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        as={as}
+        to={to}
+      >
+        {Icon && <Icon fontSize={fontSize} />}
+        {text && <span className="hidden sm:block ">{text}</span>}
+      </button>
+    </Tooltip>
   );
 };
 export default ColoredButton;
