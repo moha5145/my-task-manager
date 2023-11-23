@@ -29,6 +29,7 @@ const Column = ({
 const onAddColumn = async (e) => {
   const newColumn = {
     categoryId: category._id,
+    userId: state.user.userId,
     title: columnName,
     taskTitle: "",
     showMenu: false,

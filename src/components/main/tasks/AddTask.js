@@ -26,6 +26,7 @@ const AddTask = ({
     isEditing: false,
     categoryId: category._id,
     columnId: column._id,
+    userId: column.userId,
     expanded: false,
   };
 

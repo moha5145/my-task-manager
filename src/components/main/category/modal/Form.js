@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import slugify from "react-slugify";
 import { Save, Backspace } from "@mui/icons-material";
 
@@ -28,6 +28,7 @@ const Form = ({ state, category, dispatch, setShowModal, type, name, apiUrl }) =
       name,
       color: state.color || state.defaultColor,
       slug: slug,
+      userId: state.user.userId,
       columns: [],
     }
     const response = await axios.post(`${apiUrl}/category/create`, newCategory)

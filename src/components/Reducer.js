@@ -1,6 +1,14 @@
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 export const init = {
+  user: {
+    userName: Cookies.get("userName") || null,
+    email: Cookies.get("email") || null,
+    userToken: Cookies.get("userToken") || null,
+    userId: Cookies.get("userId") || null,
+  },
+  testerMode: false,
   id: 0,
   categorys: [],
   columns: [],
@@ -417,6 +425,23 @@ export const reducer = (state, action) => {
         ...state,
         todos: toggledExpanded,
       };
+    case "setUser":
+      return {
+        ...state,
+        user: action.payload,
+        categorys: []
+      };
+    case "testMode":
+      return {
+        ...state,
+        testMode: !state.testMode,
+        user: {
+          userName: "test" || null,
+          email: "test@test.com" || null,
+          userToken: "vCaD36BnzMK93oEltS2IaghM46izFG89yDEGjxAlP3achDy8QZ0i5XI4iuetE3dW" || null,
+          userId: "655fc069a21df0ca15ff4c4c" || null,
+        },
+      }
     default:
       return state;
   }

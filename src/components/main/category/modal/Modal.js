@@ -2,9 +2,11 @@ import React, { useState } from "react";
 
 import Form from "./Form";
 import ColoredButton from "../../../shared/buttons/ColoredButton";
+import { useNavigate } from "react-router";
 
 export default function Modal({ state, dispatch, type, category, Icon, name, apiUrl }) {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const onEdit = () => {
     setShowModal(true);
@@ -32,7 +34,13 @@ export default function Modal({ state, dispatch, type, category, Icon, name, api
         flex flex-col justify-center h-40 sm:h-52 m-2 w-full sm:w-60 bg-[#62C188] 
         text-white text-center rounded-lg drop-shadow-2xl hover:opacity-70 text-2xl"
         type="button"
-        onClick={() => setShowModal(true)}
+        onClick={() => {
+          if(state.user.userToken) {
+            setShowModal(true)
+          } else {
+            navigate("/login")
+          }
+        }}
       >
         <h2 className="text-4xl font-bold">+</h2>
         <h3 className="text-2xl font-bold">Nouvelle Liste</h3>
