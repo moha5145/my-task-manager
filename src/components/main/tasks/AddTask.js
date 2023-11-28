@@ -28,6 +28,8 @@ const AddTask = ({
     columnId: column._id,
     userId: column.userId,
     expanded: false,
+    created_at: Date.now,
+    updated_at: Date.now
   };
 
   const onSubmit = async () => {

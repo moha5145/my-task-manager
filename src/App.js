@@ -58,7 +58,7 @@ function App() {
     //   // Update the ref with the current state.categorys
     prevCategorysRef.current = state.categorys;
     setCategorys( nestCategories(state.categorys, state.todos, state.columns));
-  }, [state.categorys, state.columns, state.todos]);
+      }, [state.categorys, state.columns, state.todos]);
   
 
   const setUser = (userName, email, userToken, userId) => {

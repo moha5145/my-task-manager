@@ -30,7 +30,7 @@ const UserLayout = ({dispatch, apiUrl, state, setUser}) => {
 
       <Divider />
 
-      <ModeTest dispatch={dispatch} />
+      <ModeTest dispatch={dispatch} apiUrl={apiUrl} setUser={setUser}/>
     </section>
   );
 };

@@ -4,7 +4,7 @@ import Form from "./Form";
 import ColoredButton from "../../../shared/buttons/ColoredButton";
 import { useNavigate } from "react-router";
 
-export default function Modal({ state, dispatch, type, category, Icon, name, apiUrl }) {
+export default function Modal({ state, dispatch, type, category, Icon, name, apiUrl, isLoading }) {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 

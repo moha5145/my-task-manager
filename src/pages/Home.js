@@ -15,8 +15,9 @@ const Home = ({ state, categorys, dispatch, showModal, setShowModal ,isLoading, 
           showModal={showModal}
           setShowModal={setShowModal}
           apiUrl={apiUrl}
+          isLoading={isLoading}
         />
-        {categorys.length > 0 && categorys.map((category) => {
+        {categorys?.length > 0 && categorys.map((category) => {
           return (
             <div key={category._id} className="m-2 w-full sm:w-60">
               <Category
@@ -26,6 +27,7 @@ const Home = ({ state, categorys, dispatch, showModal, setShowModal ,isLoading, 
                 showModal={showModal}
                 setShowModal={setShowModal}
                 apiUrl={apiUrl}
+                isLoading={isLoading}
               />
             </div>
           );

@@ -14,7 +14,7 @@ export const init = {
   columns: [],
   todos: [],
   newTodos: [],
-  name: "",
+    name: "",
   taskTitle: "",
   color: "",
   colorPalette: [
@@ -262,9 +262,9 @@ export const reducer = (state, action) => {
         ...state,
         isLoading: action.payload,
       }
-    case "initialData":
+        case "initialData":
       const { allCategories, allColumns, allTodos } = action.payload;
-      
+            
       return {
         ...state,
         categorys: allCategories ? allCategories : state.categorys,
@@ -274,6 +274,13 @@ export const reducer = (state, action) => {
         name: "",
         color: "",
       }
+    case "createCategory":
+      return {
+        ...state,
+        categorys: [...state.categorys, action.payload],
+        name: "",
+        color: "",
+      };
 
     case "updateCategory":
       const {name, slug, color, _id } = action.payload;
@@ -319,6 +326,11 @@ export const reducer = (state, action) => {
         ...state,
         columns: [...state.columns, todo, inProgress, completed],
       };
+    case "fetchColumns":
+      return {
+        ...state,
+        columns: [...state.columns, action.payload]
+      };
     case "addNewColumn":
       return {
         ...state,
@@ -362,8 +374,8 @@ export const reducer = (state, action) => {
       }));
       return {
         ...state,
-        todos: [...state.todos, action.payload],
-        newTodos: [...state.newTodos, action.payload],
+        todos: [action.payload, ...state.todos ],
+        newTodos: [action.payload, ...state.newTodos],
         columns: resetTaskTitle,
       };
     case "isTodoChanged":

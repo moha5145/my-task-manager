@@ -33,12 +33,10 @@ const Form = ({ state, category, dispatch, setShowModal, type, name, apiUrl }) =
     }
     const response = await axios.post(`${apiUrl}/category/create`, newCategory)
   
-    dispatch({ type: "initialData", payload: response.data});
+    dispatch({ type: "createCategory", payload: response.data});
     dispatch({ type: 'isLoading', payload: false });
 
-    setTimeout(() => {
-      !state.isLoading && navigate(`/${slug}`)
-    }, 1000);
+    state.isLoading ? <p>Loading ...</p> : navigate(`/${response.data.slug}`)
   };
 
   const onUpdateCategory = async (e) => {
