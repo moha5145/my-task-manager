@@ -78,10 +78,40 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
   return (
     <div className="w-full relative inline-block text-left">
       <div
-        className={`flex relative max-h-[40px] items-center justify-between text-white text-lg rounded-md p-2 uppercase my-3`}
+        className={`flex relative w-full h-[35px] md:h-[46px] items-center justify-between text-lg rounded-md my-3`}
         style={{ backgroundColor: category?.color?.primary }}
       >
-        {column.title}
+        <AddEditColumn
+          dispatch={dispatch}
+          column={column}
+          category={category}
+          // Icon={ModeEdit}
+          fontSize="medium"
+          text={column.title}
+          p={10}
+          h={16}
+          // color={category?.color?.primary}
+          setColumnName={setColumnName}
+          columnName={columnName}
+          showInput={showInput}
+          setShowInput={setShowInput}
+          placeholder="Edit column title"
+          tooltipContent="Modifier le titre de la colonne"
+          onKeyUp={(e) => {
+            e.preventDefault();
+            if (e.key === "Enter") {
+              if (e.target.value.length >= 3) {
+                onUpdateColumn(e);
+              } else {
+                notify("Minimum 3 characters !", "error");
+              }
+            }
+          }}
+          onClick={() => {
+            onUpdateColumn();
+          }}
+        />
+        {/* {column.title} */}
         <IconButton
           Icon={MoreVert}
           onClick={() => {
@@ -103,7 +133,7 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
           tabIndex="-1"
         >
           <div className="flex flex-col w-full p-1 gap-2 " role="none">
-            <AddEditColumn
+            {/* <AddEditColumn
               dispatch={dispatch}
               column={column}
               category={category}
@@ -130,7 +160,7 @@ const ColHeader = ({ column, category, dispatch, columnIndex, apiUrl }) => {
               onClick={() => {
                 onUpdateColumn();
               }}
-            />
+            /> */}
 
             <FlatButton
               Icon={Save}

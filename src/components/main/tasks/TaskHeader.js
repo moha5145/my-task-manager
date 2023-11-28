@@ -54,6 +54,7 @@ const TasksHeader = ({ state, category, dispatch, apiUrl }) => {
 
         <ColoredButton
           disabled={!isSaveButtonActive}
+          displayText={false}
           text="Sauvegarder"
           Icon={Save}
           p={1}

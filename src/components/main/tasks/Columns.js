@@ -26,7 +26,6 @@ const Column = ({
   const [columnName, setColumnName] = useState("");
   const [showInput, setShowInput] = useState(false);
 
-const onAddColumn = async (e) => {
   const newColumn = {
     categoryId: category._id,
     userId: state.user.userId,
@@ -36,28 +35,33 @@ const onAddColumn = async (e) => {
     todos: []
   };
 
+const onAddColumn = async (e) => {
   const response = await axios.post(`${apiUrl}/column/create`, newColumn);
 
-  dispatch({
-    type: "addNewColumn",
-    payload: response.data,
-  });
+  switch (response.data.message) {
+    case "Column already exists":
+      notify("Cette colonne existe déjà", "error");
+      break;
+      case "Column successfully created":
+      dispatch({ type: "addNewColumn", payload: response.data.column });
+      notify(`Une nouvelle colonne (${columnName.toUpperCase()}) est ajouté  avec succès !`, "success");
+      break;
+    default:
+      break;
+  }
 
-  notify(
-    `Une nouvelle colonne (${columnName.toUpperCase()}) est ajouté  avec succès !`,
-  );
   setColumnName("");
 };
 
   return (
     <div
       className="w-full sm:flex flex-wrap justify-center
-       py-2 md:pr-12"
+       py-2 "
     >
       {category?.columns.length > 0 && category?.columns.map((column, columnIndex) => {
         return (
           <div
-            className="w-full sm:w-96 min-h-[300px] overflow-y-auto border px-2 gap-2 "
+            className="w-full sm:w-[360px] min-h-[300px] overflow-y-auto border px-2 gap-2 "
             key={column._id}
             onDragEnter={
               dragging && !column.todos.length

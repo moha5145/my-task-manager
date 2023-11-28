@@ -15,6 +15,7 @@ export default function Modal({ state, dispatch, type, category, color, apiUrl }
     <>
       <ColoredButton
         text="Theme"
+        displayText={false}
         Icon={ColorLens}
         backgroundColor={color}
         onClick={onEdit}

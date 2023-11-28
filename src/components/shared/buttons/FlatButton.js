@@ -37,7 +37,7 @@ const FlatButton = ({
         to={link}
       >
         {Icon && <Icon />}
-        {text && <span className=" hidden sm:block ">{text}</span>}
+        {text && <span className=" hidden sm:block uppercase">{text}</span>}
       </button>          
     </Tooltip>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Launch } from "@mui/icons-material";
 
 import Modal from "./modal/Modal";
 import FlatButton from "../../shared/buttons/FlatButton";
@@ -28,7 +28,8 @@ const Category = ({ category, state, dispatch, apiUrl }) => {
           className="px-2 py-2 font-bold text-2xl hover:opacity-70"
           style={{ color: primaryColor }}
         >
-          voir
+          <Launch />
+          <span> voir </span>
         </Link>
       </div>
       <div className="flex gap-2 font-bold text-2xl mx-4">

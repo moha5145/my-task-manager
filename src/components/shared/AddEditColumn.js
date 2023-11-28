@@ -19,12 +19,12 @@ const AddColumn = ({
   setShowInput,
   p,
   tooltipContent,
-  h = "10"
+  h=24
 }) => {
   const [focus, setFocus] = useState(false);
 
   return (
-    <div className={`flex gap-1 sm:h-${h}`}>
+    <div className={`flex w-10/12 gap-1 h-${h} sm:h-${h}`}>
       {showInput ? (
         <input
           type="text"
@@ -66,6 +66,7 @@ const AddColumn = ({
           fontSize={fontSize}
           backgroundColor={color}
           p={p}
+          h={h}
           tooltipContent={tooltipContent}
           onClick={() => {
             setShowInput(!showInput);
