@@ -16,7 +16,9 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 
 // const apiUrl = "http://localhost:3000";
-const apiUrl = "https://mytaskmanager-wylmfxh4.b4a.run";
+// const apiUrl = "https://mytaskmanager-wylmfxh4.b4a.run";
+const apiUrl = "https://my-task-manager-moha.cyclic.app";
+// const apiUrl = "https://dull-ruby-badger-tam.cyclic.app"
 
 function App() {
   const [state, dispatch] = useReducer(reducer, init);
